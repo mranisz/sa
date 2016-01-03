@@ -13,7 +13,7 @@ using namespace sa;
 
 ChronoStopWatch timer;
 
-map<string, SA::IndexType> SAIndexTypesMap = {{"std", SA::STANDARD}, {"plus", SA::PLUS}};
+map<string, SA::IndexType> SAIndexTypesMap = {{"std", SA::STANDARD}, {"plus", SA::PLUS}, {"plus2power", SA::PLUS2POWER}};
 map<string, HT::HTType> hashTypesMap = {{"hash", HT::STANDARD}, {"hash-dense", HT::DENSE}};
 
 void saNoLut2(string indexType, const char *textFileName, unsigned int queriesNum, unsigned int m);

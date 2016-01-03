@@ -37,7 +37,8 @@ protected:
 public:
         enum IndexType {
 		STANDARD = 1,
-		PLUS = 2
+		PLUS = 2,
+                PLUS2POWER = 3
 	};
         
 	SA() {
@@ -108,6 +109,9 @@ public:
 void binarySearchPlus(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
 void binarySearchPlusAStrcmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
 void binarySearchPlusStrncmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
+void binarySearchPlus2Power(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
+void binarySearchPlus2PowerAStrcmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
+void binarySearchPlus2PowerStrncmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
 
 }
 

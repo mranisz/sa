@@ -1,4 +1,4 @@
-# SA (suffix array) variants
+# SA (Suffix Array) variants
 
 ##What is it?
 The library contains ...
@@ -68,6 +68,7 @@ Parameters:
 - indexType:
       - SA::STANDARD (default)
       - SA::PLUS - efficient for longer patterns (longer than 20)
+      - SA::PLUS2POWER - ...
 
 Constructors:
 ```
@@ -82,6 +83,7 @@ Parameters:
 - indexType:
       - SA::STANDARD (default)
       - SA::PLUS - efficient for longer patterns (longer than 20)
+      - SA::PLUS2POWER - ...
 - hash type:
       - HT::STANDARD - using 8 bytes for each hashed entry: 4 bytes for left boundary + 4 bytes for right boundary
       - HT::DENSE - using 6 bytes for each hashed entry: 4 bytes for left boundary + 2 bytes for right boundary
@@ -89,7 +91,7 @@ Parameters:
 - loadFactor - hash table load factor (0.0 < loadFactor < 1.0)
 
 Limitations: 
-- pattern length >= k (patterns shorter than k are handled by standard variant of SA index)
+- pattern length ≥ k (patterns shorter than k are handled by standard variant of SA index)
 
 Constructors:
 ```
@@ -103,6 +105,7 @@ Parameters:
 - indexType:
       - SA::STANDARD (default)
       - SA::PLUS - efficient for longer patterns (longer than 20)
+      - SA::PLUS2POWER - ...
 
 Limitations: 
 - pattern length ≥ 2 (patterns shorter than 2 are handled by standard variant of SA index)
@@ -138,7 +141,7 @@ int main(int argc, char *argv[]) {
 		sa = new SA();
 		sa->load(indexFileName);
 	} else {
-		sa = new SA(SA::PLUS);
+		sa = new SA(SA::PLUS2POWER);
 		sa->setVerbose(true);
 		text = readText(textFileName, textLen, 0);
 		sa->build(text, textLen);

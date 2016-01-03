@@ -12,7 +12,7 @@ namespace sa {
 /*SA*/
     
 void SA::setType(int indexType) {
-	if (indexType != SA::STANDARD && indexType != SA::PLUS) {
+	if (indexType != SA::STANDARD && indexType != SA::PLUS && indexType != SA::PLUS2POWER) {
 		cout << "Error: not valid index type" << endl;
 		exit(1);
 	}
@@ -26,6 +26,9 @@ void SA::setFunctions() {
 			break;
 		case SA::PLUS:
                         this->binarySearchOperation = &binarySearchPlus;
+			break;
+                case SA::PLUS2POWER:
+                        this->binarySearchOperation = &binarySearchPlus2Power;
 			break;
 		default:
 			cout << "Error: not valid index type" << endl;
@@ -362,6 +365,96 @@ void binarySearchPlusStrncmp(unsigned int *sa, unsigned char *text, unsigned int
         while (strncmp((const char*)pattern, (const char*)(text + sa[r]), patternLength) >= 0) {
                 ++r;
         }
+	end = r;
+}
+
+void binarySearchPlus2Power(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end) {
+	if (pattern[patternLength - 1] == 255) binarySearchPlus2PowerStrncmp(sa, text, lStart, rStart, pattern, patternLength, beg, end);
+	else binarySearchPlus2PowerAStrcmp(sa, text, lStart, rStart, pattern, patternLength, beg, end);
+}
+
+void binarySearchPlus2PowerAStrcmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end) {
+	unsigned int l = lStart;
+	unsigned int r = rStart;
+	unsigned int mid;
+	while (l < r) {
+		mid = (l + r) / 2;
+		if (A_strcmp((const char*)pattern, (const char*)(text + sa[mid])) > 0) {
+			l = mid + 1;
+		}
+		else {
+			r = mid;
+		}
+	}
+	beg = l;
+        unsigned int maxGap = rStart - beg;
+	++pattern[patternLength - 1];
+        for (unsigned int i = 1; ; i <<= 1) {
+		if (i >= maxGap) {
+			r = rStart;
+			break;
+		}
+		r = l + i;
+		if (A_strcmp((const char*)pattern, (const char*)(text + sa[r])) <= 0) {
+			if (i < 4) {
+                                --pattern[patternLength - 1];
+				end = r;
+				return;
+			}
+			break;
+		}
+	}
+	while (l < r) {
+		mid = (l + r) / 2;
+		if (A_strcmp((const char*)pattern, (const char*)(text + sa[mid])) <= 0) {
+			r = mid;
+		}
+		else {
+			l = mid + 1;
+		}
+	}
+	--pattern[patternLength - 1];
+	end = r;
+}
+
+void binarySearchPlus2PowerStrncmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end) {
+	unsigned int l = lStart;
+	unsigned int r = rStart;
+	unsigned int mid;
+	while (l < r) {
+		mid = (l + r) / 2;
+		if (strncmp((const char*)pattern, (const char*)(text + sa[mid]), patternLength) > 0) {
+			l = mid + 1;
+		}
+		else {
+			r = mid;
+		}
+	}
+	beg = l;
+	unsigned int maxGap = rStart - beg;
+        for (unsigned int i = 1; ; i <<= 1) {
+		if (i >= maxGap) {
+			r = rStart;
+			break;
+		}
+		r = l + i;
+		if (strncmp((const char*)pattern, (const char*)(text + sa[r]), patternLength) < 0) {
+			if (i < 4) {
+				end = r;
+				return;
+			}
+			break;
+		}
+	}
+	while (l < r) {
+		mid = (l + r) / 2;
+		if (strncmp((const char*)pattern, (const char*)(text + sa[mid]), patternLength) < 0) {
+			r = mid;
+		}
+		else {
+			l = mid + 1;
+		}
+	}
 	end = r;
 }
 
