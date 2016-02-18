@@ -1,6 +1,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <math.h>
+#include <string>
+#include <sstream>
 #include "libs/asmlib.h"
 #include "shared/sais.h"
 #include "sa.h"
@@ -12,7 +14,7 @@ namespace sa {
 /*SA*/
     
 void SA::setType(int indexType) {
-	if (indexType != SA::STANDARD && indexType != SA::PLUS && indexType != SA::PLUS2POWER) {
+	if (indexType != SA::STANDARD && indexType != SA::PLUS2POWER) {
 		cout << "Error: not valid index type" << endl;
 		exit(1);
 	}
@@ -24,9 +26,6 @@ void SA::setFunctions() {
 		case SA::STANDARD:
                         this->binarySearchOperation = &binarySearch;
 			break;
-		case SA::PLUS:
-                        this->binarySearchOperation = &binarySearchPlus;
-			break;
                 case SA::PLUS2POWER:
                         this->binarySearchOperation = &binarySearchPlus2Power;
 			break;
@@ -34,8 +33,14 @@ void SA::setFunctions() {
 			cout << "Error: not valid index type" << endl;
 			exit(1);
         }
-        if (this->ht != NULL) this->countOperation = &SA::count_hash;
-	else this->countOperation = &SA::count_no_hash;
+        if (this->ht != NULL) {
+            this->countOperation = &SA::count_hash;
+            this->locateOperation = &SA::locate_hash;
+	}
+        else {
+            this->countOperation = &SA::count_no_hash;
+            this->locateOperation = &SA::locate_no_hash;
+        }
 }
 
 void SA::free() {
@@ -104,10 +109,41 @@ unsigned int SA::getTextSize() {
 	return this->textLen * sizeof(unsigned char);
 }
 
+string SA::getParamsString() {
+        ostringstream oss;
+        oss << "SA";
+        switch(this->type) {
+            case SA::STANDARD:
+                oss << " standard";
+                break;
+            case SA::PLUS2POWER:
+                oss << " plus2power";
+                break;
+        }
+        if (this->ht != NULL) {
+            switch(this->ht->type) {
+                case HT::STANDARD:
+                    oss << " hash";
+                    break;
+                case HT::DENSE:
+                    oss << " hash-dense";
+                    break;
+            }
+            oss << " " << this->ht->k << " " << this->ht->loadFactor;
+        }
+        return oss.str();
+}
+
 unsigned int SA::count_no_hash(unsigned char *pattern, unsigned int patternLen) {
         unsigned int beg, end;
 	(this->binarySearchOperation)(this->alignedSa, this->alignedText, 0, this->saLen, pattern, patternLen, beg, end);
 	return end - beg;
+}
+
+void SA::locate_no_hash(unsigned char* pattern, unsigned int patternLen, vector<unsigned int>& res) {
+        unsigned int beg, end;
+	(this->binarySearchOperation)(this->alignedSa, this->alignedText, 0, this->saLen, pattern, patternLen, beg, end);
+        res.insert(res.end(), this->alignedSa + beg, this->alignedSa + end);
 }
 
 unsigned int SA::count_hash(unsigned char *pattern, unsigned int patternLen) {
@@ -118,12 +154,22 @@ unsigned int SA::count_hash(unsigned char *pattern, unsigned int patternLen) {
         return end - beg;
 }
 
+void SA::locate_hash(unsigned char* pattern, unsigned int patternLen, vector<unsigned int>& res) {
+        if (patternLen < this->ht->k) this->locate_no_hash(pattern, patternLen, res);
+        else {
+            unsigned int leftBoundary, rightBoundary, beg, end;
+            this->ht->getBoundaries(pattern, this->alignedText, this->alignedSa, leftBoundary, rightBoundary);
+            (this->binarySearchOperation)(this->alignedSa, this->alignedText, leftBoundary, rightBoundary, pattern, patternLen, beg, end);
+            res.insert(res.end(), this->alignedSa + beg, this->alignedSa + end);
+        }
+}
+
 unsigned int SA::count(unsigned char *pattern, unsigned int patternLen) {
 	return (this->*countOperation)(pattern, patternLen);
 }
 
-unsigned int *SA::locate(unsigned char *pattern, unsigned int patternLen) {
-	return 0;
+void SA::locate(unsigned char* pattern, unsigned int patternLen, vector<unsigned int>& res) {
+	(this->*locateOperation)(pattern, patternLen, res);
 }
 
 void SA::save(const char *fileName) {
@@ -226,6 +272,20 @@ unsigned int SALut2::getIndexSize() {
         return size;
 }
 
+string SALut2::getParamsString() {
+        ostringstream oss;
+        oss << "SALut2";
+        switch(this->type) {
+            case SA::STANDARD:
+                oss << " standard";
+                break;
+            case SA::PLUS2POWER:
+                oss << " plus2power";
+                break;
+        }
+        return oss.str();
+}
+
 void SALut2::save(const char *fileName) {
         if (this->verbose) cout << "Saving index in " << fileName << " ... " << flush;
 	FILE *outFile;
@@ -313,60 +373,21 @@ unsigned int SALut2::count(unsigned char *pattern, unsigned int patternLen) {
 	} else return 0;
 }
 
-unsigned int *SALut2::locate(unsigned char *pattern, unsigned int patternLen) {
-	return 0;
+void SALut2::locate(unsigned char* pattern, unsigned int patternLen, vector<unsigned int>& res) {
+	if (patternLen < 2) {
+            this->locate_no_hash(pattern, patternLen, res);
+        } else {
+            unsigned int leftBoundaryLUT2 = this->lut2[pattern[0]][pattern[1]][0];
+            unsigned int rightBoundaryLUT2 = this->lut2[pattern[0]][pattern[1]][1];
+            if (leftBoundaryLUT2 < rightBoundaryLUT2) {
+                    unsigned int beg, end;
+                    (this->binarySearchOperation)(this->alignedSa, this->alignedText, leftBoundaryLUT2, rightBoundaryLUT2, pattern, patternLen, beg, end);
+                    res.insert(res.end(), this->alignedSa + beg, this->alignedSa + end);
+            }
+        }
 }
 
 /*SHARED STUFF*/
-
-void binarySearchPlus(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end) {
-	if (pattern[patternLength - 1] == 255) binarySearchPlusStrncmp(sa, text, lStart, rStart, pattern, patternLength, beg, end);
-	else binarySearchPlusAStrcmp(sa, text, lStart, rStart, pattern, patternLength, beg, end);
-}
-
-void binarySearchPlusAStrcmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end) {
-	unsigned int l = lStart;
-	unsigned int r = rStart;
-	unsigned int mid;
-	while (l < r) {
-		mid = (l + r) / 2;
-		if (A_strcmp((const char*)pattern, (const char*)(text + sa[mid])) > 0) {
-			l = mid + 1;
-		}
-		else {
-			r = mid;
-		}
-	}
-	beg = l;
-	r = l + 1;
-	++pattern[patternLength - 1];
-        while (A_strcmp((const char*)pattern, (const char*)(text + sa[r])) >= 0) {
-                ++r;
-        }
-	--pattern[patternLength - 1];
-	end = r;
-}
-
-void binarySearchPlusStrncmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end) {
-	unsigned int l = lStart;
-	unsigned int r = rStart;
-	unsigned int mid;
-	while (l < r) {
-		mid = (l + r) / 2;
-		if (strncmp((const char*)pattern, (const char*)(text + sa[mid]), patternLength) > 0) {
-			l = mid + 1;
-		}
-		else {
-			r = mid;
-		}
-	}
-	beg = l;
-	r = l + 1;
-        while (strncmp((const char*)pattern, (const char*)(text + sa[r]), patternLength) >= 0) {
-                ++r;
-        }
-	end = r;
-}
 
 void binarySearchPlus2Power(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end) {
 	if (pattern[patternLength - 1] == 255) binarySearchPlus2PowerStrncmp(sa, text, lStart, rStart, pattern, patternLength, beg, end);

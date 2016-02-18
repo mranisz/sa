@@ -4,6 +4,7 @@
 #include "shared/common.h"
 #include "shared/hash.h"
 #include <cstdio>
+#include <vector>
 
 using namespace std;
 
@@ -25,6 +26,7 @@ protected:
         
         void (*binarySearchOperation)(unsigned int *, unsigned char *, unsigned int, unsigned int, unsigned char *, int, unsigned int &, unsigned int &) = NULL;
         unsigned int (SA::*countOperation)(unsigned char *, unsigned int) = NULL;
+        void (SA::*locateOperation)(unsigned char *, unsigned int, vector<unsigned int> &) = NULL;
 
 	void freeMemory();
 	void initialize();
@@ -33,11 +35,12 @@ protected:
         void buildSA();
         unsigned int count_no_hash(unsigned char *pattern, unsigned int patternLen);
         unsigned int count_hash(unsigned char *pattern, unsigned int patternLen);
+        void locate_no_hash(unsigned char* pattern, unsigned int patternLen, vector<unsigned int>& res);
+        void locate_hash(unsigned char* pattern, unsigned int patternLen, vector<unsigned int>& res);
         
 public:
         enum IndexType {
 		STANDARD = 1,
-		PLUS = 2,
                 PLUS2POWER = 3
 	};
         
@@ -71,9 +74,10 @@ public:
 	void free();
 	unsigned int getIndexSize();
 	unsigned int getTextSize();
+        string getParamsString();
 
 	unsigned int count(unsigned char *pattern, unsigned int patternLen);
-	unsigned int *locate(unsigned char *pattern, unsigned int patternLen);
+	void locate(unsigned char* pattern, unsigned int patternLen, vector<unsigned int>& res);
 };
 
 /*SALut2*/
@@ -99,16 +103,14 @@ public:
         void save(const char *fileName);
 	void load(const char *fileName);
         unsigned int getIndexSize();
+        string getParamsString();
         
         unsigned int count(unsigned char *pattern, unsigned int patternLen);
-	unsigned int *locate(unsigned char *pattern, unsigned int patternLen);
+	void locate(unsigned char* pattern, unsigned int patternLen, vector<unsigned int>& res);
 };
 
 /*SHARED STUFF*/
 
-void binarySearchPlus(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
-void binarySearchPlusAStrcmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
-void binarySearchPlusStrncmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
 void binarySearchPlus2Power(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
 void binarySearchPlus2PowerAStrcmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
 void binarySearchPlus2PowerStrncmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);

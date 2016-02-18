@@ -13,7 +13,7 @@ using namespace sa;
 
 ChronoStopWatch timer;
 
-map<string, SA::IndexType> SAIndexTypesMap = {{"std", SA::STANDARD}, {"plus", SA::PLUS}, {"plus2power", SA::PLUS2POWER}};
+map<string, SA::IndexType> SAIndexTypesMap = {{"std", SA::STANDARD}, {"plus2power", SA::PLUS2POWER}};
 map<string, HT::HTType> hashTypesMap = {{"hash", HT::STANDARD}, {"hash-dense", HT::DENSE}};
 
 void saNoLut2(string indexType, const char *textFileName, unsigned int queriesNum, unsigned int m);
@@ -22,9 +22,9 @@ void saHash(string indexType, string hTType, string k, string loadFactor, const 
 
 void getUsage(char **argv) {
 	cout << "Select index you want to test:" << endl;
-	cout << "SA: ./" << argv[0] << " std|plus fileName patternNum patternLen" << endl;
-        cout << "SA-LUT2: ./" << argv[0] << " lut2 std|plus fileName patternNum patternLen" << endl;
-        cout << "SA-hash: ./" << argv[0] << " std|plus hash|hash-dense k loadFactor fileName patternNum patternLen" << endl;
+	cout << "SA: " << argv[0] << " std|plus2power fileName patternNum patternLen" << endl;
+        cout << "SA-LUT2: " << argv[0] << " lut2 std|plus2power fileName patternNum patternLen" << endl;
+        cout << "SA-hash: " << argv[0] << " std|plus hash|hash-dense k loadFactor fileName patternNum patternLen" << endl;
         cout << "where:" << endl;
 	cout << "fileName - name of text file" << endl;
 	cout << "patternNum - number of patterns (queries)" << endl;

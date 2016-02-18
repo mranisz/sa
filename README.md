@@ -3,8 +3,6 @@
 ##What is it?
 The library contains ...
 
-The current version of SA variants handles only the count query (i.e., returns the number of occurrences of the given pattern).
-
 ##Requirements
 The SA indexes require:
 - C++11 ready compiler such as g++ version 4.7 or higher
@@ -57,6 +55,10 @@ unsigned int getTextSize();
 ```
 unsigned int count(unsigned char *pattern, unsigned int patternLen);
 ```
+- get the result of **locate** query:
+```
+void locate(unsigned char *pattern, unsigned int patternLen, vector<unsigned int>& res);
+```
 - set **verbose** mode:
 ```
 void setVerbose(bool verbose);
@@ -67,7 +69,6 @@ void setVerbose(bool verbose);
 Parameters:
 - indexType:
       - SA::STANDARD (default)
-      - SA::PLUS - efficient for longer patterns (longer than 20)
       - SA::PLUS2POWER - ...
 
 Constructors:
@@ -82,7 +83,6 @@ SA-hash is suffix array with hashed k-symbol prefixes of suffix array suffixes t
 Parameters:
 - indexType:
       - SA::STANDARD (default)
-      - SA::PLUS - efficient for longer patterns (longer than 20)
       - SA::PLUS2POWER - ...
 - hash type:
       - HT::STANDARD - using 8 bytes for each hashed entry: 4 bytes for left boundary + 4 bytes for right boundary
@@ -104,7 +104,6 @@ To speed up searches, SA stores lookup table over all 2-symbol strings (LUT2), w
 Parameters:
 - indexType:
       - SA::STANDARD (default)
-      - SA::PLUS - efficient for longer patterns (longer than 20)
       - SA::PLUS2POWER - ...
 
 Limitations: 
@@ -130,7 +129,7 @@ using namespace sa;
 int main(int argc, char *argv[]) {
 
 	unsigned int queriesNum = 1000000;
-	unsigned int patternLen = 30;
+	unsigned int patternLen = 20;
 	unsigned char* text = NULL;
 	unsigned int textLen;
 	SA *sa;
