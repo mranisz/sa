@@ -82,7 +82,7 @@ SA-hash is suffix array with hashed k-symbol prefixes of suffix array suffixes t
 
 Parameters:
 - indexType:
-      - SA::STANDARD (default)
+      - SA::STANDARD
       - SA::PLUS2POWER - ...
 - hash type:
       - HT::STANDARD - using 8 bytes for each hashed entry: 4 bytes for left boundary + 4 bytes for right boundary
