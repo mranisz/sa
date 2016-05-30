@@ -90,7 +90,7 @@ void SA::getSA(const char *textFileName) {
                 FILE *inFile;
                 inFile = fopen(saFileName, "rb");
                 size_t result = fread(this->alignedSa, (size_t)sizeof(unsigned int), (size_t)this->saLen, inFile);
-                if (result != this->textLen) {
+                if (result != this->saLen) {
                         cout << "Error loading SA from " << textFileName << endl;
                         exit(1);
                 }
