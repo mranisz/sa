@@ -27,9 +27,9 @@ To use the SA variants library:
 
 ##API
 There are several functions you can call on each of the suffix array text index:
-- **build** the index using the text:
+- **build** the index using text file called textFileName:
 ```
-void build(unsigned char* text, unsigned int textLen);
+void build(const char *textFileName);
 ```
 - **save** the index to file called fileName:
 ```
@@ -69,7 +69,7 @@ void setVerbose(bool verbose);
 Parameters:
 - indexType:
       - SA::STANDARD (default)
-      - SA::PLUS2POWER - ...
+      - SA::DBL - ...
 
 Constructors:
 ```
@@ -83,7 +83,7 @@ SA-hash is suffix array with hashed k-symbol prefixes of suffix array suffixes t
 Parameters:
 - indexType:
       - SA::STANDARD
-      - SA::PLUS2POWER - ...
+      - SA::DBL - ...
 - hash type:
       - HT::STANDARD - using 8 bytes for each hashed entry: 4 bytes for left boundary + 4 bytes for right boundary
       - HT::DENSE - using 6 bytes for each hashed entry: 4 bytes for left boundary + 2 bytes for right boundary
@@ -104,7 +104,7 @@ To speed up searches, SA stores lookup table over all 2-symbol strings (LUT2), w
 Parameters:
 - indexType:
       - SA::STANDARD (default)
-      - SA::PLUS2POWER - ...
+      - SA::DBL - ...
 
 Limitations: 
 - pattern length ≥ 2 (patterns shorter than 2 are handled by standard variant of SA index)
@@ -119,7 +119,6 @@ SALut2(SA::IndexType indexType);
 ```
 #include <iostream>
 #include <stdlib.h>
-#include "sa/shared/common.h"
 #include "sa/shared/patterns.h"
 #include "sa/sa.h"
 
@@ -130,8 +129,6 @@ int main(int argc, char *argv[]) {
 
 	unsigned int queriesNum = 1000000;
 	unsigned int patternLen = 20;
-	unsigned char* text = NULL;
-	unsigned int textLen;
 	SA *sa;
 	const char *textFileName = "english";
 	const char *indexFileName = "english-sa.idx";
@@ -140,10 +137,9 @@ int main(int argc, char *argv[]) {
 		sa = new SA();
 		sa->load(indexFileName);
 	} else {
-		sa = new SA(SA::PLUS2POWER);
+		sa = new SA(SA::DBL);
 		sa->setVerbose(true);
-		text = readText(textFileName, textLen, 0);
-		sa->build(text, textLen);
+		sa->build(textFileName);
 		sa->save(indexFileName);
 	}
 
@@ -157,7 +153,6 @@ int main(int argc, char *argv[]) {
 		cout << "Pattern |" << patterns[i] << "| occurs " << sa->count(patterns[i], patternLen) << " times." << endl;
 	}
 
-	if (text != NULL) delete[] text;
 	delete sa;
 	delete P;
 }

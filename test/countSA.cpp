@@ -3,17 +3,17 @@
 #include <string>
 #include <stdlib.h>
 #include <map>
-#include "shared/common.h"
-#include "shared/patterns.h"
-#include "shared/timer.h"
-#include "sa.h"
+#include "../shared/common.h"
+#include "../shared/patterns.h"
+#include "../shared/timer.h"
+#include "../sa.h"
 
 using namespace std;
 using namespace sa;
 
 ChronoStopWatch timer;
 
-map<string, SA::IndexType> SAIndexTypesMap = {{"std", SA::STANDARD}, {"plus2power", SA::PLUS2POWER}};
+map<string, SA::IndexType> SAIndexTypesMap = {{"std", SA::STANDARD}, {"dbl", SA::DBL}};
 map<string, HT::HTType> hashTypesMap = {{"hash", HT::STANDARD}, {"hash-dense", HT::DENSE}};
 
 void saNoLut2(string indexType, const char *textFileName, unsigned int queriesNum, unsigned int m);
@@ -21,9 +21,9 @@ void saLut2(string indexType, const char *textFileName, unsigned int queriesNum,
 void saHash(string indexType, string hTType, string k, string loadFactor, const char *textFileName, unsigned int queriesNum, unsigned int m);
 
 void getUsage(char **argv) {
-	cout << "Select index you want to test:" << endl;
-	cout << "SA: " << argv[0] << " std|plus2power fileName patternNum patternLen" << endl;
-        cout << "SA-LUT2: " << argv[0] << " lut2 std|plus2power fileName patternNum patternLen" << endl;
+	cout << "Select index you want to test (count):" << endl;
+	cout << "SA: " << argv[0] << " std|dbl fileName patternNum patternLen" << endl;
+        cout << "SA-LUT2: " << argv[0] << " lut2 std|dbl fileName patternNum patternLen" << endl;
         cout << "SA-hash: " << argv[0] << " std|plus hash|hash-dense k loadFactor fileName patternNum patternLen" << endl;
         cout << "where:" << endl;
 	cout << "fileName - name of text file" << endl;
@@ -50,8 +50,6 @@ int main(int argc, char *argv[]) {
 }
 
 void saNoLut2(string indexType, const char *textFileName, unsigned int queriesNum, unsigned int m) {
-        unsigned char* text = NULL;
-	unsigned int textLen;
 	SA *sa;
         string indexFileNameString = "SA-" + indexType + "-" + (string)textFileName + ".idx";
 	const char *indexFileName = indexFileNameString.c_str();
@@ -62,8 +60,7 @@ void saNoLut2(string indexType, const char *textFileName, unsigned int queriesNu
 	} else {
 		sa = new SA(SAIndexTypesMap[indexType]);
 		sa->setVerbose(true);
-		text = readText(textFileName, textLen, 0);
-		sa->build(text, textLen);
+		sa->build(textFileName);
 		sa->save(indexFileName);
 	}
 
@@ -93,7 +90,6 @@ void saNoLut2(string indexType, const char *textFileName, unsigned int queriesNu
 	resultFile << endl;
 	resultFile.close();
 
-	if (text != NULL) delete[] text;
 	delete[] indexCounts;
 	delete sa;
 	delete P;
@@ -101,8 +97,6 @@ void saNoLut2(string indexType, const char *textFileName, unsigned int queriesNu
 }
 
 void saLut2(string indexType, const char *textFileName, unsigned int queriesNum, unsigned int m) {
-        unsigned char* text = NULL;
-	unsigned int textLen;
 	SALut2 *saLut2;
         string indexFileNameString = "SALut2-" + indexType + "-" + (string)textFileName + ".idx";
 	const char *indexFileName = indexFileNameString.c_str();
@@ -113,8 +107,7 @@ void saLut2(string indexType, const char *textFileName, unsigned int queriesNum,
 	} else {
 		saLut2 = new SALut2(SAIndexTypesMap[indexType]);
 		saLut2->setVerbose(true);
-		text = readText(textFileName, textLen, 0);
-		saLut2->build(text, textLen);
+		saLut2->build(textFileName);
 		saLut2->save(indexFileName);
 	}
 
@@ -144,7 +137,6 @@ void saLut2(string indexType, const char *textFileName, unsigned int queriesNum,
 	resultFile << endl;
 	resultFile.close();
 
-	if (text != NULL) delete[] text;
 	delete[] indexCounts;
 	delete saLut2;
 	delete P;
@@ -152,8 +144,6 @@ void saLut2(string indexType, const char *textFileName, unsigned int queriesNum,
 }
 
 void saHash(string indexType, string hTType, string k, string loadFactor, const char *textFileName, unsigned int queriesNum, unsigned int m) {
-        unsigned char* text = NULL;
-	unsigned int textLen;
 	SA *sa;
         string indexFileNameString = "SA-" + indexType + "-" + hTType + "-" + (string)textFileName + "-" +  k + "-" + loadFactor + ".idx";
 	const char *indexFileName = indexFileNameString.c_str();
@@ -164,8 +154,7 @@ void saHash(string indexType, string hTType, string k, string loadFactor, const 
 	} else {
 		sa = new SA(SAIndexTypesMap[indexType], hashTypesMap[hTType], atoi(k.c_str()), atof(loadFactor.c_str()));
 		sa->setVerbose(true);
-		text = readText(textFileName, textLen, 0);
-		sa->build(text, textLen);
+		sa->build(textFileName);
 		sa->save(indexFileName);
 	}
 
@@ -195,7 +184,6 @@ void saHash(string indexType, string hTType, string k, string loadFactor, const 
 	resultFile << endl;
 	resultFile.close();
 
-	if (text != NULL) delete[] text;
 	delete[] indexCounts;
 	delete sa;
 	delete P;

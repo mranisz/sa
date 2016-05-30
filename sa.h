@@ -32,7 +32,8 @@ protected:
 	void initialize();
         void setType(int indexType);
 	void setFunctions();
-        void buildSA();
+        void getSA(const char *textFileName);
+        void loadText(const char *textFileName);
         unsigned int count_no_hash(unsigned char *pattern, unsigned int patternLen);
         unsigned int count_hash(unsigned char *pattern, unsigned int patternLen);
         void locate_no_hash(unsigned char* pattern, unsigned int patternLen, vector<unsigned int>& res);
@@ -41,7 +42,7 @@ protected:
 public:
         enum IndexType {
 		STANDARD = 1,
-                PLUS2POWER = 3
+                DBL = 3
 	};
         
 	SA() {
@@ -68,7 +69,7 @@ public:
                 if (this->ht != NULL) delete this->ht;
 	}
 
-	void build(unsigned char *text, unsigned int textLen);
+	void build(const char *textFileName);
 	void save(const char *fileName);
 	void load(const char *fileName);
 	void free();
@@ -99,7 +100,7 @@ public:
 		this->setFunctions();
 	}
         
-        void build(unsigned char *text, unsigned int textLen);
+        void build(const char *textFileName);
         void save(const char *fileName);
 	void load(const char *fileName);
         unsigned int getIndexSize();
@@ -111,9 +112,9 @@ public:
 
 /*SHARED STUFF*/
 
-void binarySearchPlus2Power(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
-void binarySearchPlus2PowerAStrcmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
-void binarySearchPlus2PowerStrncmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
+void binarySearchDbl(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
+void binarySearchDblAStrcmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
+void binarySearchDblStrncmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
 
 }
 

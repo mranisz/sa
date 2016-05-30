@@ -14,7 +14,7 @@ namespace sa {
 /*SA*/
     
 void SA::setType(int indexType) {
-	if (indexType != SA::STANDARD && indexType != SA::PLUS2POWER) {
+	if (indexType != SA::STANDARD && indexType != SA::DBL) {
 		cout << "Error: not valid index type" << endl;
 		exit(1);
 	}
@@ -26,8 +26,8 @@ void SA::setFunctions() {
 		case SA::STANDARD:
                         this->binarySearchOperation = &binarySearch;
 			break;
-                case SA::PLUS2POWER:
-                        this->binarySearchOperation = &binarySearchPlus2Power;
+                case SA::DBL:
+                        this->binarySearchOperation = &binarySearchDbl;
 			break;
 		default:
 			cout << "Error: not valid index type" << endl;
@@ -63,32 +63,65 @@ void SA::freeMemory() {
 	if (this->ht != NULL) this->ht->free();
 }
 
-void SA::buildSA() {
-        if (this->verbose) cout << "Building SA ... " << flush;
+void SA::getSA(const char *textFileName) {
+        stringstream ss;
+	ss << "SA-" << textFileName << ".dat";
+	string s = ss.str();
+	char *saFileName = (char *)(s.c_str());
         this->saLen = this->textLen + 1;
         this->sa = new unsigned int[this->saLen + 32];
         this->alignedSa = this->sa;
         while ((unsigned long long)this->alignedSa % 128) ++this->alignedSa;
-	this->alignedSa[0] = this->textLen;
-	++this->alignedSa;
-	sais(this->alignedText, (int *)this->alignedSa, this->textLen);
-	--this->alignedSa;
-	if (verbose) cout << "Done" << endl;
+        if (!fileExists(saFileName)) {
+                if (this->verbose) cout << "Building SA ... " << flush;
+                this->alignedSa[0] = this->textLen;
+                ++this->alignedSa;
+                sais(this->alignedText, (int *)this->alignedSa, this->textLen);
+                --this->alignedSa;
+                if (verbose) cout << "Done" << endl;
+                if (verbose) cout << "Saving SA in " << saFileName << " ... " << flush;
+                FILE *outFile;
+                outFile = fopen(saFileName, "w");
+                fwrite(this->alignedSa, (size_t)(sizeof(unsigned int)), (size_t)this->saLen, outFile);
+                fclose(outFile);
+        } 
+        else {
+                if (verbose) cout << "Loading SA from " << saFileName << " ... " << flush;
+                FILE *inFile;
+                inFile = fopen(saFileName, "rb");
+                size_t result = fread(this->alignedSa, (size_t)sizeof(unsigned int), (size_t)this->saLen, inFile);
+                if (result != this->textLen) {
+                        cout << "Error loading SA from " << textFileName << endl;
+                        exit(1);
+                }
+                fclose(inFile);
+        }
+        if (verbose) cout << "Done" << endl;	
 }
 
-void SA::build(unsigned char* text, unsigned int textLen) {
-	checkNullChar(text, textLen);
-	this->free();
+void SA::loadText(const char *textFileName) {
         if (this->verbose) cout << "Loading text ... " << flush;
-	this->textLen = textLen;
+        this->textLen = getFileSize(textFileName, sizeof(unsigned char));
         this->text = new unsigned char[this->textLen + 128 + 1];
         this->alignedText = this->text;
         while ((unsigned long long)this->alignedText % 128) ++this->alignedText;
-        for (unsigned int i = 0; i < this->textLen; ++i) this->alignedText[i] = text[i];
+        FILE *inFile;
+	inFile = fopen(textFileName, "rb");
+        size_t result = fread(this->alignedText, (size_t)sizeof(unsigned char), (size_t)this->textLen, inFile);
         this->alignedText[this->textLen] = '\0';
+        if (result != this->textLen) {
+                cout << "Error loading text from " << textFileName << endl;
+                exit(1);
+        }
+        fclose(inFile);
+        checkNullChar(this->alignedText, this->textLen);
         if (this->verbose) cout << "Done" << endl;
-        
-        this->buildSA();
+}
+
+void SA::build(const char *textFileName) {
+	this->free();
+        this->loadText(textFileName);
+        this->getSA(textFileName);
         
         if (this->ht != NULL) {
                 if (this->verbose) cout << "Building hash table ... " << flush;
@@ -116,8 +149,8 @@ string SA::getParamsString() {
             case SA::STANDARD:
                 oss << " standard";
                 break;
-            case SA::PLUS2POWER:
-                oss << " plus2power";
+            case SA::DBL:
+                oss << " dbl";
                 break;
         }
         if (this->ht != NULL) {
@@ -261,8 +294,8 @@ void SA::load(const char *fileName) {
 
 /*SALut2*/
 
-void SALut2::build(unsigned char* text, unsigned int textLen) {
-        SA::build(text, textLen);
+void SALut2::build(const char *textFileName) {
+        SA::build(textFileName);
         fillLUT2(this->lut2, this->alignedText, this->alignedSa, this->saLen);
 }
 
@@ -279,8 +312,8 @@ string SALut2::getParamsString() {
             case SA::STANDARD:
                 oss << " standard";
                 break;
-            case SA::PLUS2POWER:
-                oss << " plus2power";
+            case SA::DBL:
+                oss << " dbl";
                 break;
         }
         return oss.str();
@@ -389,12 +422,12 @@ void SALut2::locate(unsigned char* pattern, unsigned int patternLen, vector<unsi
 
 /*SHARED STUFF*/
 
-void binarySearchPlus2Power(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end) {
-	if (pattern[patternLength - 1] == 255) binarySearchPlus2PowerStrncmp(sa, text, lStart, rStart, pattern, patternLength, beg, end);
-	else binarySearchPlus2PowerAStrcmp(sa, text, lStart, rStart, pattern, patternLength, beg, end);
+void binarySearchDbl(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end) {
+	if (pattern[patternLength - 1] == 255) binarySearchDblStrncmp(sa, text, lStart, rStart, pattern, patternLength, beg, end);
+	else binarySearchDblAStrcmp(sa, text, lStart, rStart, pattern, patternLength, beg, end);
 }
 
-void binarySearchPlus2PowerAStrcmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end) {
+void binarySearchDblAStrcmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end) {
 	unsigned int l = lStart;
 	unsigned int r = rStart;
 	unsigned int mid;
@@ -438,7 +471,7 @@ void binarySearchPlus2PowerAStrcmp(unsigned int *sa, unsigned char *text, unsign
 	end = r;
 }
 
-void binarySearchPlus2PowerStrncmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end) {
+void binarySearchDblStrncmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end) {
 	unsigned int l = lStart;
 	unsigned int r = rStart;
 	unsigned int mid;
