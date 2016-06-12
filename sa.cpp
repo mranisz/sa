@@ -450,11 +450,6 @@ void binarySearchDblAStrcmp(unsigned int *sa, unsigned char *text, unsigned int 
 		}
 		r = l + i;
 		if (A_strcmp((const char*)pattern, (const char*)(text + sa[r])) <= 0) {
-			if (i < 4) {
-                                --pattern[patternLength - 1];
-				end = r;
-				return;
-			}
 			break;
 		}
 	}
@@ -493,10 +488,6 @@ void binarySearchDblStrncmp(unsigned int *sa, unsigned char *text, unsigned int 
 		}
 		r = l + i;
 		if (strncmp((const char*)pattern, (const char*)(text + sa[r]), patternLength) < 0) {
-			if (i < 4) {
-				end = r;
-				return;
-			}
 			break;
 		}
 	}
