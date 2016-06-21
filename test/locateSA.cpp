@@ -65,7 +65,7 @@ void saNoLut2(string indexType, const char *textFileName, unsigned int queriesNu
 
 	Patterns *P = new Patterns(textFileName, queriesNum, m);
         //NegativePatterns *P = new NegativePatterns(textFileName, queriesNum, m);
-        /*SpecialPatterns *P = new SpecialPatterns(textFileName, m);
+        /*MaliciousPatterns *P = new MaliciousPatterns(textFileName, m);
         queriesNum = P->getQueriesNum();
         if (queriesNum == 0) exit(1);*/
 	unsigned char **patterns = P->getPatterns();
@@ -115,7 +115,7 @@ void saLut2(string indexType, const char *textFileName, unsigned int queriesNum,
 
 	Patterns *P = new Patterns(textFileName, queriesNum, m);
         //NegativePatterns *P = new NegativePatterns(textFileName, queriesNum, m);
-        /*SpecialPatterns *P = new SpecialPatterns(textFileName, m);
+        /*MaliciousPatterns *P = new MaliciousPatterns(textFileName, m);
         queriesNum = P->getQueriesNum();
         if (queriesNum == 0) exit(1);*/
 	unsigned char **patterns = P->getPatterns();
@@ -165,7 +165,7 @@ void saHash(string indexType, string hTType, string k, string loadFactor, const 
 
 	Patterns *P = new Patterns(textFileName, queriesNum, m);
         //NegativePatterns *P = new NegativePatterns(textFileName, queriesNum, m);
-        /*SpecialPatterns *P = new SpecialPatterns(textFileName, m);
+        /*MaliciousPatterns *P = new MaliciousPatterns(textFileName, m);
         queriesNum = P->getQueriesNum();
         if (queriesNum == 0) exit(1);*/
 	unsigned char **patterns = P->getPatterns();
