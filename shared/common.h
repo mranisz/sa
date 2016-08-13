@@ -6,7 +6,7 @@
 
 using namespace std;
 
-namespace sa {
+namespace shared {
 
 class Index {
 protected:

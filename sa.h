@@ -7,6 +7,7 @@
 #include <vector>
 
 using namespace std;
+using namespace shared;
 
 namespace sa {
     

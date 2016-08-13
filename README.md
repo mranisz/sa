@@ -23,7 +23,7 @@ To use the SA variants library:
 - compile it with "-std=c++11 -O3" options and link it with libraries:
   - sa/libsa.a
   - sa/libs/libaelf64.a (linux) or fbcsa/libs/libacof64.lib (windows)
-- use "sa" namespace
+- use "sa" and "shared" namespaces
 
 ##API
 There are several functions you can call on each of the suffix array text index:
@@ -123,6 +123,7 @@ SALut2(SA::IndexType indexType);
 #include "sa/sa.h"
 
 using namespace std;
+using namespace shared;
 using namespace sa;
 
 int main(int argc, char *argv[]) {
