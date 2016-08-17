@@ -19,7 +19,7 @@ make
 
 ##Usage
 To use the SA variants library:
-- include "sa/sa.h" to your project
+- include "sa/sa.hpp" to your project
 - compile it with "-std=c++11 -O3" options and link it with libraries:
   - sa/libsa.a
   - sa/libs/libaelf64.a (linux) or fbcsa/libs/libacof64.lib (windows)
@@ -64,29 +64,28 @@ void locate(unsigned char *pattern, unsigned int patternLen, vector<unsigned int
 void setVerbose(bool verbose);
 ```
 
-##SA
+##SA/<SAType T/>
 
 Parameters:
-- indexType:
-      - SA::STANDARD (default)
-      - SA::DBL - ...
+- T:
+      - SAType::STANDARD
+      - SAType::DBL - ...
 
 Constructors:
 ```
-SA();
-SA(SA::IndexType indexType);
+SA<SAType T>();
 ```
 
-##SA-hash
+##SAHash\<SAType T, HTType HASHTYPE\>
 SA-hash is suffix array with hashed k-symbol prefixes of suffix array suffixes to speed up searches (k ≥ 2). This variant is particularly efficient in speed for short patterns (not much longer than k).
 
 Parameters:
-- indexType:
-      - SA::STANDARD
-      - SA::DBL - ...
-- hash type:
-      - HT::STANDARD - using 8 bytes for each hashed entry: 4 bytes for left boundary + 4 bytes for right boundary
-      - HT::DENSE - using 6 bytes for each hashed entry: 4 bytes for left boundary + 2 bytes for right boundary
+- T:
+      - SAType::STANDARD
+      - SAType::DBL - ...
+- HASHTYPE:
+      - HTType::STANDARD - using 8 bytes for each hashed entry: 4 bytes for left boundary + 4 bytes for right boundary
+      - HTType::DENSE - using 6 bytes for each hashed entry: 4 bytes for left boundary + 2 bytes for right boundary
 - k - length of prefixes of suffixes from suffix array (k ≥ 2)
 - loadFactor - hash table load factor (0.0 < loadFactor < 1.0)
 
@@ -95,24 +94,23 @@ Limitations:
 
 Constructors:
 ```
-SA(SA::IndexType indexType, HT::HTType hTType, unsigned int k, double loadFactor);
+SAHash<SAType T, HTType HASHTYPE>(unsigned int k, double loadFactor);
 ```
 
-##SA-LUT2
+##SALut2/<SAType T/>
 To speed up searches, SA stores lookup table over all 2-symbol strings (LUT2), whose entries are the suffix intervals.
 
 Parameters:
-- indexType:
-      - SA::STANDARD (default)
-      - SA::DBL - ...
+- T:
+      - SAType::STANDARD
+      - SAType::DBL - ...
 
 Limitations: 
 - pattern length ≥ 2 (patterns shorter than 2 are handled by standard variant of SA index)
 
 Constructors:
 ```
-SALut2();
-SALut2(SA::IndexType indexType);
+SALut2<SAType T>();
 ```
 
 ##SA usage example
@@ -120,7 +118,7 @@ SALut2(SA::IndexType indexType);
 #include <iostream>
 #include <stdlib.h>
 #include "sa/shared/patterns.h"
-#include "sa/sa.h"
+#include "sa/sa.hpp"
 
 using namespace std;
 using namespace shared;
@@ -130,15 +128,13 @@ int main(int argc, char *argv[]) {
 
 	unsigned int queriesNum = 1000000;
 	unsigned int patternLen = 20;
-	SA *sa;
+	SA<SAType::DBL> *sa = new SA<SAType::DBL>();
 	const char *textFileName = "english";
-	const char *indexFileName = "english-sa.idx";
+	const char *indexFileName = "english-sa-dbl.idx";
 
 	if (fileExists(indexFileName)) {
-		sa = new SA();
 		sa->load(indexFileName);
 	} else {
-		sa = new SA(SA::DBL);
 		sa->setVerbose(true);
 		sa->build(textFileName);
 		sa->save(indexFileName);

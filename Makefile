@@ -17,9 +17,9 @@ countSA: test/countSA.cpp libsa.a libs/$(ASMLIB)
 locateSA: test/locateSA.cpp libsa.a libs/$(ASMLIB)
 	$(CXX) $(CFLAGS) test/locateSA.cpp libsa.a libs/$(ASMLIB) -o test/locateSA
 
-libsa.a: sa.h sa.cpp shared/common.h shared/common.cpp shared/patterns.h shared/patterns.cpp shared/timer.h shared/timer.cpp shared/sais.h shared/sais.c shared/xxhash.h shared/xxhash.c shared/hash.h shared/hash.cpp
-	$(CXX) $(CFLAGS) -c sa.cpp shared/common.cpp shared/patterns.cpp shared/timer.cpp shared/sais.c shared/xxhash.c shared/hash.cpp
-	ar rcs libsa.a sa.o common.o patterns.o timer.o sais.o xxhash.o hash.o
+libsa.a: sa.hpp shared/common.h shared/common.cpp shared/patterns.h shared/patterns.cpp shared/timer.h shared/timer.cpp shared/sais.h shared/sais.c shared/xxhash.h shared/xxhash.c shared/hash.hpp
+	$(CXX) $(CFLAGS) -c shared/common.cpp shared/patterns.cpp shared/timer.cpp shared/sais.c shared/xxhash.c
+	ar rcs libsa.a sa.hpp common.o patterns.o timer.o sais.o xxhash.o shared/hash.hpp
 	make cleanObjects
 
 cleanObjects:
