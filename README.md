@@ -64,7 +64,7 @@ void locate(unsigned char *pattern, unsigned int patternLen, vector<unsigned int
 void setVerbose(bool verbose);
 ```
 
-##SA/<SAType T/>
+##SA\<SAType T\>
 
 Parameters:
 - T:
@@ -97,7 +97,7 @@ Constructors:
 SAHash<SAType T, HTType HASHTYPE>(unsigned int k, double loadFactor);
 ```
 
-##SALut2/<SAType T/>
+##SALut2\<SAType T\>
 To speed up searches, SA stores lookup table over all 2-symbol strings (LUT2), whose entries are the suffix intervals.
 
 Parameters:
