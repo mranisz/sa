@@ -77,7 +77,7 @@ SA<SAType T>();
 ```
 
 ##SAHash\<SAType T, HTType HASHTYPE\>
-SA-hash is suffix array with hashed k-symbol prefixes of suffix array suffixes to speed up searches (k ≥ 2). This variant is particularly efficient in speed for short patterns (not much longer than k).
+SAHash is suffix array with hashed k-symbol prefixes of suffix array suffixes to speed up searches (k ≥ 2). This variant is particularly efficient in speed for short patterns (not much longer than k).
 
 Parameters:
 - T:
