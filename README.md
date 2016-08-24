@@ -86,11 +86,13 @@ Parameters:
 - HASHTYPE:
       - HTType::STANDARD - using 8 bytes for each hashed entry: 4 bytes for left boundary + 4 bytes for right boundary
       - HTType::DENSE - using 6 bytes for each hashed entry: 4 bytes for left boundary + 2 bytes for right boundary
-- k - length of prefixes of suffixes from suffix array (k ≥ 2)
-- loadFactor - hash table load factor (0.0 < loadFactor < 1.0)
+- k - length of prefixes of suffixes from suffix array
+- loadFactor - hash table load factor
 
 Limitations: 
 - pattern length ≥ k (patterns shorter than k are handled by standard variant of SA index)
+- k ≥ 2
+- 0.0 < loadFactor < 1.0
 
 Constructors:
 ```
