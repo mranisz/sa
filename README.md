@@ -59,10 +59,6 @@ unsigned int count(unsigned char *pattern, unsigned int patternLen);
 ```
 void locate(unsigned char *pattern, unsigned int patternLen, vector<unsigned int>& res);
 ```
-- set **verbose** mode:
-```
-void setVerbose(bool verbose);
-```
 
 ##SA\<SAType T\>
 
@@ -137,7 +133,6 @@ int main(int argc, char *argv[]) {
 	if (fileExists(indexFileName)) {
 		sa->load(indexFileName);
 	} else {
-		sa->setVerbose(true);
 		sa->build(textFileName);
 		sa->save(indexFileName);
 	}

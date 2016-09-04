@@ -64,7 +64,6 @@ void saStd(const char *textFileName, unsigned int queriesNum, unsigned int m) {
 	if (fileExists(indexFileName)) {
 		sa->load(indexFileName);
 	} else {
-		sa->setVerbose(true);
 		sa->build(textFileName);
 		sa->save(indexFileName);
 	}
@@ -113,7 +112,6 @@ void saDbl(const char *textFileName, unsigned int queriesNum, unsigned int m) {
 	if (fileExists(indexFileName)) {
 		sa->load(indexFileName);
 	} else {
-		sa->setVerbose(true);
 		sa->build(textFileName);
 		sa->save(indexFileName);
 	}
@@ -162,7 +160,6 @@ void saLut2Std(const char *textFileName, unsigned int queriesNum, unsigned int m
 	if (fileExists(indexFileName)) {
 		saLut2->load(indexFileName);
 	} else {
-		saLut2->setVerbose(true);
 		saLut2->build(textFileName);
 		saLut2->save(indexFileName);
 	}
@@ -211,7 +208,6 @@ void saLut2Dbl(const char *textFileName, unsigned int queriesNum, unsigned int m
 	if (fileExists(indexFileName)) {
 		saLut2->load(indexFileName);
 	} else {
-		saLut2->setVerbose(true);
 		saLut2->build(textFileName);
 		saLut2->save(indexFileName);
 	}
@@ -260,7 +256,6 @@ void saStdHash(string k, string loadFactor, const char *textFileName, unsigned i
 	if (fileExists(indexFileName)) {
 		sa->load(indexFileName);
 	} else {
-		sa->setVerbose(true);
 		sa->build(textFileName);
 		sa->save(indexFileName);
 	}
@@ -309,7 +304,6 @@ void saDblHash(string k, string loadFactor, const char *textFileName, unsigned i
 	if (fileExists(indexFileName)) {
 		sa->load(indexFileName);
 	} else {
-		sa->setVerbose(true);
 		sa->build(textFileName);
 		sa->save(indexFileName);
 	}
@@ -358,7 +352,6 @@ void saStdHashDense(string k, string loadFactor, const char *textFileName, unsig
 	if (fileExists(indexFileName)) {
 		sa->load(indexFileName);
 	} else {
-		sa->setVerbose(true);
 		sa->build(textFileName);
 		sa->save(indexFileName);
 	}
@@ -407,7 +400,6 @@ void saDblHashDense(string k, string loadFactor, const char *textFileName, unsig
 	if (fileExists(indexFileName)) {
 		sa->load(indexFileName);
 	} else {
-		sa->setVerbose(true);
 		sa->build(textFileName);
 		sa->save(indexFileName);
 	}

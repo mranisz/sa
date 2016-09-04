@@ -26,7 +26,7 @@ void binarySearchDblAStrcmp(unsigned int *sa, unsigned char *text, unsigned int 
 void binarySearchDblStrncmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
 void binarySearchDbl(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
     
-template<SAType T> class SA : public Index {
+template<SAType T> class SA {
 protected:
 	unsigned int *sa;
         unsigned int *alignedSa;
@@ -59,34 +59,34 @@ protected:
             this->alignedSa = this->sa;
             while ((unsigned long long)this->alignedSa % 128) ++this->alignedSa;
             if (!fileExists(saFileName)) {
-                if (this->verbose) cout << "Building SA ... " << flush;
+                cout << "Building SA ... " << flush;
                 this->alignedSa[0] = this->textLen;
                 ++this->alignedSa;
                 sais(this->alignedText, (int *)this->alignedSa, this->textLen);
                 --this->alignedSa;
-                if (verbose) cout << "Done" << endl;
-                if (verbose) cout << "Saving SA in " << saFileName << " ... " << flush;
+                cout << "Done" << endl;
+                cout << "Saving SA in " << saFileName << " ... " << flush;
                 FILE *outFile;
                 outFile = fopen(saFileName, "w");
                 fwrite(this->alignedSa, (size_t)(sizeof(unsigned int)), (size_t)this->saLen, outFile);
                 fclose(outFile);
             } 
             else {
-                if (verbose) cout << "Loading SA from " << saFileName << " ... " << flush;
+                cout << "Loading SA from " << saFileName << " ... " << flush;
                 FILE *inFile;
                 inFile = fopen(saFileName, "rb");
                 size_t result = fread(this->alignedSa, (size_t)sizeof(unsigned int), (size_t)this->saLen, inFile);
                 if (result != this->saLen) {
-                                cout << "Error loading SA from " << textFileName << endl;
-                                exit(1);
+                        cout << "Error loading SA from " << textFileName << endl;
+                        exit(1);
                 }
                 fclose(inFile);
             }
-            if (verbose) cout << "Done" << endl;	
+            cout << "Done" << endl;	
         }
         
         void loadText(const char *textFileName) {
-            if (this->verbose) cout << "Loading text ... " << flush;
+            cout << "Loading text ... " << flush;
             this->textLen = getFileSize(textFileName, sizeof(unsigned char));
             this->text = new unsigned char[this->textLen + 128 + 1];
             this->alignedText = this->text;
@@ -96,12 +96,12 @@ protected:
             size_t result = fread(this->alignedText, (size_t)sizeof(unsigned char), (size_t)this->textLen, inFile);
             this->alignedText[this->textLen] = '\0';
             if (result != this->textLen) {
-                            cout << "Error loading text from " << textFileName << endl;
-                            exit(1);
+                    cout << "Error loading text from " << textFileName << endl;
+                    exit(1);
             }
             fclose(inFile);
             checkNullChar(this->alignedText, this->textLen);
-            if (this->verbose) cout << "Done" << endl;
+            cout << "Done" << endl;
         }
         
 public:
@@ -119,33 +119,26 @@ public:
             this->getSA(textFileName);
         }
         
-	void save(const char *fileName) {
-            if (this->verbose) cout << "Saving index in " << fileName << " ... " << flush;
-            FILE *outFile;
-            outFile = fopen(fileName, "w");
-            fwrite(&this->verbose, (size_t)sizeof(bool), (size_t)1, outFile);
+        void save(FILE *outFile) {
             fwrite(&this->saLen, (size_t)sizeof(unsigned int), (size_t)1, outFile);
             if (this->saLen > 0) fwrite(this->alignedSa, (size_t)sizeof(unsigned int), (size_t)this->saLen, outFile);
             fwrite(&this->textLen, (size_t)sizeof(unsigned int), (size_t)1, outFile);
             if (this->textLen > 0) fwrite(this->alignedText, (size_t)sizeof(unsigned char), (size_t)this->textLen, outFile);
-            fclose(outFile);
-            if (this->verbose) cout << "Done" << endl;
         }
         
-	void load(const char *fileName) {
+	void save(const char *fileName) {
+            cout << "Saving index in " << fileName << " ... " << flush;
+            FILE *outFile = fopen(fileName, "w");
+            this->save(outFile);
+            fclose(outFile);
+            cout << "Done" << endl;
+        }
+        
+	void load(FILE *inFile) {
             this->free();
-            FILE *inFile;
-            inFile = fopen(fileName, "rb");
-            size_t result;
-            result = fread(&this->verbose, (size_t)sizeof(bool), (size_t)1, inFile);
+            size_t result = fread(&this->saLen, (size_t)sizeof(unsigned int), (size_t)1, inFile);
             if (result != 1) {
-                    cout << "Error loading index from " << fileName << endl;
-                    exit(1);
-            }
-            if (this->verbose) cout << "Loading index from " << fileName << " ... " << flush;
-            result = fread(&this->saLen, (size_t)sizeof(unsigned int), (size_t)1, inFile);
-            if (result != 1) {
-                    cout << "Error loading index from " << fileName << endl;
+                    cout << "Error loading index" << endl;
                     exit(1);
             }
             if (this->saLen > 0) {
@@ -154,13 +147,13 @@ public:
                     while ((unsigned long long)this->alignedSa % 128) ++this->alignedSa;
                     result = fread(this->alignedSa, (size_t)sizeof(unsigned int), (size_t)this->saLen, inFile);
                     if (result != this->saLen) {
-                            cout << "Error loading index from " << fileName << endl;
+                            cout << "Error loading index" << endl;
                             exit(1);
                     }
             }
             result = fread(&this->textLen, (size_t)sizeof(unsigned int), (size_t)1, inFile);
             if (result != 1) {
-                    cout << "Error loading index from " << fileName << endl;
+                    cout << "Error loading index" << endl;
                     exit(1);
             }
             if (this->textLen > 0) {
@@ -170,12 +163,18 @@ public:
                     result = fread(this->alignedText, (size_t)sizeof(unsigned char), (size_t)this->textLen, inFile);
                     this->alignedText[this->textLen] = '\0';
                     if (result != this->textLen) {
-                            cout << "Error loading index from " << fileName << endl;
+                            cout << "Error loading index" << endl;
                             exit(1);
                     }
             }
+        }
+        
+        void load(const char *fileName) {
+            FILE *inFile = fopen(fileName, "rb");
+            cout << "Loading index from " << fileName << " ... " << flush;
+            this->load(inFile);
             fclose(inFile);
-            if (this->verbose) cout << "Done" << endl;
+            cout << "Done" << endl;
         }
         
 	void free() {
@@ -257,72 +256,37 @@ public:
 
 	void build(const char *textFileName) {
             SA<T>::build(textFileName);
-            if (this->verbose) cout << "Building hash table ... " << flush;
+            cout << "Building hash table ... " << flush;
             this->ht->build(this->alignedText, this->textLen, this->alignedSa, this->saLen);
-            if (this->verbose) cout << "Done" << endl;
+            cout << "Done" << endl;
+        }
+        
+        void save(FILE *outFile) {
+            SA<T>::save(outFile);
+            this->ht->save(outFile);
         }
         
 	void save(const char *fileName) {
-            if (this->verbose) cout << "Saving index in " << fileName << " ... " << flush;
-            FILE *outFile;
-            outFile = fopen(fileName, "w");
-            fwrite(&this->verbose, (size_t)sizeof(bool), (size_t)1, outFile);
-            fwrite(&this->saLen, (size_t)sizeof(unsigned int), (size_t)1, outFile);
-            if (this->saLen > 0) fwrite(this->alignedSa, (size_t)sizeof(unsigned int), (size_t)this->saLen, outFile);
-            fwrite(&this->textLen, (size_t)sizeof(unsigned int), (size_t)1, outFile);
-            if (this->textLen > 0) fwrite(this->alignedText, (size_t)sizeof(unsigned char), (size_t)this->textLen, outFile);
-            this->ht->save(outFile);
+            cout << "Saving index in " << fileName << " ... " << flush;
+            FILE *outFile = fopen(fileName, "w");
+            this->save(outFile);
             fclose(outFile);
-            if (this->verbose) cout << "Done" << endl;
+            cout << "Done" << endl;
         }
         
-	void load(const char *fileName) {
-            this->free();
-            FILE *inFile;
-            inFile = fopen(fileName, "rb");
-            size_t result;
-            result = fread(&this->verbose, (size_t)sizeof(bool), (size_t)1, inFile);
-            if (result != 1) {
-                    cout << "Error loading index from " << fileName << endl;
-                    exit(1);
-            }
-            if (this->verbose) cout << "Loading index from " << fileName << " ... " << flush;
-            result = fread(&this->saLen, (size_t)sizeof(unsigned int), (size_t)1, inFile);
-            if (result != 1) {
-                    cout << "Error loading index from " << fileName << endl;
-                    exit(1);
-            }
-            if (this->saLen > 0) {
-                    this->sa = new unsigned int[this->saLen + 32];
-                    this->alignedSa = this->sa;
-                    while ((unsigned long long)this->alignedSa % 128) ++this->alignedSa;
-                    result = fread(this->alignedSa, (size_t)sizeof(unsigned int), (size_t)this->saLen, inFile);
-                    if (result != this->saLen) {
-                            cout << "Error loading index from " << fileName << endl;
-                            exit(1);
-                    }
-            }
-            result = fread(&this->textLen, (size_t)sizeof(unsigned int), (size_t)1, inFile);
-            if (result != 1) {
-                    cout << "Error loading index from " << fileName << endl;
-                    exit(1);
-            }
-            if (this->textLen > 0) {
-                    this->text = new unsigned char[this->textLen + 128 + 1];
-                    this->alignedText = this->text;
-                    while ((unsigned long long)this->alignedText % 128) ++this->alignedText;
-                    result = fread(this->alignedText, (size_t)sizeof(unsigned char), (size_t)this->textLen, inFile);
-                    this->alignedText[this->textLen] = '\0';
-                    if (result != this->textLen) {
-                            cout << "Error loading index from " << fileName << endl;
-                            exit(1);
-                    }
-            }
+	void load(FILE *inFile) {
+            SA<T>::load(inFile);
             delete this->ht;
             this->ht = new HT<HASHTYPE>();
             this->ht->load(inFile);
+        }
+        
+        void load(const char *fileName) {
+            FILE *inFile = fopen(fileName, "rb");
+            cout << "Loading index from " << fileName << " ... " << flush;
+            this->load(inFile);
             fclose(inFile);
-            if (this->verbose) cout << "Done" << endl;
+            cout << "Done" << endl;
         }
         
 	void free() {
@@ -404,69 +368,34 @@ public:
             fillLUT2(this->lut2, this->alignedText, this->alignedSa, this->saLen);
         }
         
-        void save(const char *fileName) {
-            if (this->verbose) cout << "Saving index in " << fileName << " ... " << flush;
-            FILE *outFile;
-            outFile = fopen(fileName, "w");
-            fwrite(&this->verbose, (size_t)sizeof(bool), (size_t)1, outFile);
-            fwrite(&this->saLen, (size_t)sizeof(unsigned int), (size_t)1, outFile);
-            if (this->saLen > 0) fwrite(this->alignedSa, (size_t)sizeof(unsigned int), (size_t)this->saLen, outFile);
-            fwrite(&this->textLen, (size_t)sizeof(unsigned int), (size_t)1, outFile);
-            if (this->textLen > 0) fwrite(this->alignedText, (size_t)sizeof(unsigned char), (size_t)this->textLen, outFile);
+        void save(FILE *outFile) {
+            SA<T>::save(outFile);
             fwrite(&this->lut2, (size_t)sizeof(unsigned int), (size_t)(256 * 256 * 2), outFile);
-            fclose(outFile);
-            if (this->verbose) cout << "Done" << endl;
         }
         
-	void load(const char *fileName) {
-            this->free();
-            FILE *inFile;
-            inFile = fopen(fileName, "rb");
-            size_t result;
-            result = fread(&this->verbose, (size_t)sizeof(bool), (size_t)1, inFile);
-            if (result != 1) {
-                    cout << "Error loading index from " << fileName << endl;
-                    exit(1);
-            }
-            if (this->verbose) cout << "Loading index from " << fileName << " ... " << flush;
-            result = fread(&this->saLen, (size_t)sizeof(unsigned int), (size_t)1, inFile);
-            if (result != 1) {
-                    cout << "Error loading index from " << fileName << endl;
-                    exit(1);
-            }
-            if (this->saLen > 0) {
-                    this->sa = new unsigned int[this->saLen + 32];
-                    this->alignedSa = this->sa;
-                    while ((unsigned long long)this->alignedSa % 128) ++this->alignedSa;
-                    result = fread(this->alignedSa, (size_t)sizeof(unsigned int), (size_t)this->saLen, inFile);
-                    if (result != this->saLen) {
-                            cout << "Error loading index from " << fileName << endl;
-                            exit(1);
-                    }
-            }
-            result = fread(&this->textLen, (size_t)sizeof(unsigned int), (size_t)1, inFile);
-            if (result != 1) {
-                    cout << "Error loading index from " << fileName << endl;
-                    exit(1);
-            }
-            if (this->textLen > 0) {
-                    this->text = new unsigned char[this->textLen + 128 + 1];
-                    this->alignedText = this->text;
-                    while ((unsigned long long)this->alignedText % 128) ++this->alignedText;
-                    result = fread(this->alignedText, (size_t)sizeof(unsigned char), (size_t)this->textLen, inFile);
-                    this->alignedText[this->textLen] = '\0';
-                    if (result != this->textLen) {
-                            cout << "Error loading index from " << fileName << endl;
-                            exit(1);
-                    }
-            }
-            result = fread(this->lut2, (size_t)sizeof(unsigned int), (size_t)(256 * 256 * 2), inFile);
+        void save(const char *fileName) {
+            cout << "Saving index in " << fileName << " ... " << flush;
+            FILE *outFile = fopen(fileName, "w");
+            this->save(outFile);
+            fclose(outFile);
+            cout << "Done" << endl;
+        }
+        
+	void load(FILE *inFile) {
+            SA<T>::load(inFile);
+            size_t result = fread(this->lut2, (size_t)sizeof(unsigned int), (size_t)(256 * 256 * 2), inFile);
             if (result != (256 * 256 * 2)) {
                     cout << "Error loading index" << endl;
                     exit(1);
             }
+        }
+        
+        void load(const char *fileName) {
+            FILE *inFile = fopen(fileName, "rb");
+            cout << "Loading index from " << fileName << " ... " << flush;
+            this->load(inFile);
             fclose(inFile);
-            if (this->verbose) cout << "Done" << endl;
+            cout << "Done" << endl;
         }
         
         unsigned int getIndexSize() {
