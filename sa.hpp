@@ -18,8 +18,8 @@ using namespace shared;
 namespace sa {
 
 enum SAType {
-    STANDARD = 1,
-    DBL = 2
+    SA_STANDARD = 1,
+    SA_DBL = 2
 };
 
 void binarySearchDblAStrcmp(unsigned int *sa, unsigned char *text, unsigned int lStart, unsigned int rStart, unsigned char *pattern, int patternLength, unsigned int &beg, unsigned int &end);
@@ -198,7 +198,7 @@ public:
             ostringstream oss;
             oss << "SA";
             switch(T) {
-                    case SAType::DBL:
+                    case SAType::SA_DBL:
                             oss << " dbl";
                             break;
                     default:
@@ -211,7 +211,7 @@ public:
 	unsigned int count(unsigned char *pattern, unsigned int patternLen) {
             unsigned int beg, end;
             switch(T) {
-                    case SAType::DBL:
+                    case SAType::SA_DBL:
                             binarySearchDbl(this->alignedSa, this->alignedText, 0, this->saLen, pattern, patternLen, beg, end);
                             break;
                     default:
@@ -224,7 +224,7 @@ public:
 	void locate(unsigned char* pattern, unsigned int patternLen, vector<unsigned int>& res) {
             unsigned int beg, end;
             switch(T) {
-                    case SAType::DBL:
+                    case SAType::SA_DBL:
                             binarySearchDbl(this->alignedSa, this->alignedText, 0, this->saLen, pattern, patternLen, beg, end);
                             break;
                     default:
@@ -338,7 +338,7 @@ public:
             ostringstream oss;
             oss << "SA";
             switch(T) {
-                case SAType::DBL:
+                case SAType::SA_DBL:
                     oss << " dbl";
                     break;
                 default:
@@ -346,7 +346,7 @@ public:
                     break;
             }
             switch(HASHTYPE) {
-                case HTType::DENSE:
+                case HTType::HT_DENSE:
                     oss << " hash-dense";
                     break;
                 default:
@@ -362,7 +362,7 @@ public:
             unsigned int leftBoundary, rightBoundary, beg, end;
             this->ht->getBoundaries(pattern, this->alignedText, this->alignedSa, leftBoundary, rightBoundary);
             switch(T) {
-                case SAType::DBL:
+                case SAType::SA_DBL:
                     binarySearchDbl(this->alignedSa, this->alignedText, leftBoundary, rightBoundary, pattern, patternLen, beg, end);
                     break;
                 default:
@@ -378,7 +378,7 @@ public:
                 unsigned int leftBoundary, rightBoundary, beg, end;
                 this->ht->getBoundaries(pattern, this->alignedText, this->alignedSa, leftBoundary, rightBoundary);
                 switch(T) {
-                    case SAType::DBL:
+                    case SAType::SA_DBL:
                         binarySearchDbl(this->alignedSa, this->alignedText, leftBoundary, rightBoundary, pattern, patternLen, beg, end);
                         break;
                     default:
@@ -479,7 +479,7 @@ public:
             ostringstream oss;
             oss << "SALut2";
             switch(T) {
-                case SAType::DBL:
+                case SAType::SA_DBL:
                     oss << " dbl";
                     break;
                 default:
@@ -496,7 +496,7 @@ public:
             if (leftBoundaryLUT2 < rightBoundaryLUT2) {
                 unsigned int beg, end;
                 switch(T) {
-                    case SAType::DBL:
+                    case SAType::SA_DBL:
                         binarySearchDbl(this->alignedSa, this->alignedText, leftBoundaryLUT2, rightBoundaryLUT2, pattern, patternLen, beg, end);
                         break;
                     default:
@@ -516,7 +516,7 @@ public:
                     if (leftBoundaryLUT2 < rightBoundaryLUT2) {
                         unsigned int beg, end;
                         switch(T) {
-                            case SAType::DBL:
+                            case SAType::SA_DBL:
                                 binarySearchDbl(this->alignedSa, this->alignedText, leftBoundaryLUT2, rightBoundaryLUT2, pattern, patternLen, beg, end);
                                 break;
                             default:

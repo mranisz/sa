@@ -68,8 +68,8 @@ void setVerbose(bool verbose);
 
 Parameters:
 - T:
-      - SAType::STANDARD
-      - SAType::DBL - ...
+      - SA_STANDARD
+      - SA_DBL - ...
 
 Constructors:
 ```
@@ -81,11 +81,11 @@ SAHash is suffix array with hashed k-symbol prefixes of suffix array suffixes to
 
 Parameters:
 - T:
-      - SAType::STANDARD
-      - SAType::DBL - ...
+      - SA_STANDARD
+      - SA_DBL - ...
 - HASHTYPE:
-      - HTType::STANDARD - using 8 bytes for each hashed entry: 4 bytes for left boundary + 4 bytes for right boundary
-      - HTType::DENSE - using 6 bytes for each hashed entry: 4 bytes for left boundary + 2 bytes for right boundary
+      - HT_STANDARD - using 8 bytes for each hashed entry: 4 bytes for left boundary + 4 bytes for right boundary
+      - HT_DENSE - using 6 bytes for each hashed entry: 4 bytes for left boundary + 2 bytes for right boundary
 - k - length of prefixes of suffixes from suffix array
 - loadFactor - hash table load factor
 
@@ -104,8 +104,8 @@ To speed up searches, SA stores lookup table over all 2-symbol strings (LUT2), w
 
 Parameters:
 - T:
-      - SAType::STANDARD
-      - SAType::DBL - ...
+      - SA_STANDARD
+      - SA_DBL - ...
 
 Limitations: 
 - pattern length ≥ 2 (patterns shorter than 2 are handled by standard variant of SA index)
@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
 
 	unsigned int queriesNum = 1000000;
 	unsigned int patternLen = 20;
-	SA<SAType::DBL> *sa = new SA<SAType::DBL>();
+	SA<SA_DBL> *sa = new SA<SA_DBL>();
 	const char *textFileName = "english";
 	const char *indexFileName = "english-sa-dbl.idx";
 

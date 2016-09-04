@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 }
 
 void saStd(const char *textFileName, unsigned int queriesNum, unsigned int m) {
-	SA<SAType::STANDARD> *sa = new SA<SAType::STANDARD>();
+	SA<SA_STANDARD> *sa = new SA<SA_STANDARD>();
 	string indexFileNameString = "SA-std-" + (string)textFileName + ".idx";
 	const char *indexFileName = indexFileNameString.c_str();
 
@@ -106,7 +106,7 @@ void saStd(const char *textFileName, unsigned int queriesNum, unsigned int m) {
 }
 
 void saDbl(const char *textFileName, unsigned int queriesNum, unsigned int m) {
-	SA<SAType::DBL> *sa = new SA<SAType::DBL>();
+	SA<SA_DBL> *sa = new SA<SA_DBL>();
 	string indexFileNameString = "SA-dbl-" + (string)textFileName + ".idx";
 	const char *indexFileName = indexFileNameString.c_str();
 
@@ -155,7 +155,7 @@ void saDbl(const char *textFileName, unsigned int queriesNum, unsigned int m) {
 }
 
 void saLut2Std(const char *textFileName, unsigned int queriesNum, unsigned int m) {
-	SALut2<SAType::STANDARD> *saLut2 = new SALut2<SAType::STANDARD>();
+	SALut2<SA_STANDARD> *saLut2 = new SALut2<SA_STANDARD>();
 	string indexFileNameString = "SALut2-std-" + (string)textFileName + ".idx";
 	const char *indexFileName = indexFileNameString.c_str();
 
@@ -204,7 +204,7 @@ void saLut2Std(const char *textFileName, unsigned int queriesNum, unsigned int m
 }
 
 void saLut2Dbl(const char *textFileName, unsigned int queriesNum, unsigned int m) {
-	SALut2<SAType::DBL> *saLut2 = new SALut2<SAType::DBL>();
+	SALut2<SA_DBL> *saLut2 = new SALut2<SA_DBL>();
 	string indexFileNameString = "SALut2-dbl-" + (string)textFileName + ".idx";
 	const char *indexFileName = indexFileNameString.c_str();
 
@@ -253,7 +253,7 @@ void saLut2Dbl(const char *textFileName, unsigned int queriesNum, unsigned int m
 }
 
 void saStdHash(string k, string loadFactor, const char *textFileName, unsigned int queriesNum, unsigned int m) {
-	SAHash<SAType::STANDARD, HTType::STANDARD> *sa = new SAHash<SAType::STANDARD, HTType::STANDARD>(atoi(k.c_str()), atof(loadFactor.c_str()));
+	SAHash<SA_STANDARD, HT_STANDARD> *sa = new SAHash<SA_STANDARD, HT_STANDARD>(atoi(k.c_str()), atof(loadFactor.c_str()));
     string indexFileNameString = "SA-std-hash-" + (string)textFileName + "-" +  k + "-" + loadFactor + ".idx";
 	const char *indexFileName = indexFileNameString.c_str();
 
@@ -302,7 +302,7 @@ void saStdHash(string k, string loadFactor, const char *textFileName, unsigned i
 }
 
 void saDblHash(string k, string loadFactor, const char *textFileName, unsigned int queriesNum, unsigned int m) {
-	SAHash<SAType::DBL, HTType::STANDARD> *sa = new SAHash<SAType::DBL, HTType::STANDARD>(atoi(k.c_str()), atof(loadFactor.c_str()));
+	SAHash<SA_DBL, HT_STANDARD> *sa = new SAHash<SA_DBL, HT_STANDARD>(atoi(k.c_str()), atof(loadFactor.c_str()));
     string indexFileNameString = "SA-dbl-hash-" + (string)textFileName + "-" +  k + "-" + loadFactor + ".idx";
 	const char *indexFileName = indexFileNameString.c_str();
 
@@ -351,7 +351,7 @@ void saDblHash(string k, string loadFactor, const char *textFileName, unsigned i
 }
 
 void saStdHashDense(string k, string loadFactor, const char *textFileName, unsigned int queriesNum, unsigned int m) {
-	SAHash<SAType::STANDARD, HTType::DENSE> *sa = new SAHash<SAType::STANDARD, HTType::DENSE>(atoi(k.c_str()), atof(loadFactor.c_str()));
+	SAHash<SA_STANDARD, HT_DENSE> *sa = new SAHash<SA_STANDARD, HT_DENSE>(atoi(k.c_str()), atof(loadFactor.c_str()));
     string indexFileNameString = "SA-std-hash-dense-" + (string)textFileName + "-" +  k + "-" + loadFactor + ".idx";
 	const char *indexFileName = indexFileNameString.c_str();
 
@@ -400,7 +400,7 @@ void saStdHashDense(string k, string loadFactor, const char *textFileName, unsig
 }
 
 void saDblHashDense(string k, string loadFactor, const char *textFileName, unsigned int queriesNum, unsigned int m) {
-	SAHash<SAType::DBL, HTType::DENSE> *sa = new SAHash<SAType::DBL, HTType::DENSE>(atoi(k.c_str()), atof(loadFactor.c_str()));
+	SAHash<SA_DBL, HT_DENSE> *sa = new SAHash<SA_DBL, HT_DENSE>(atoi(k.c_str()), atof(loadFactor.c_str()));
     string indexFileNameString = "SA-dbl-hash-dense-" + (string)textFileName + "-" +  k + "-" + loadFactor + ".idx";
 	const char *indexFileName = indexFileNameString.c_str();
 
