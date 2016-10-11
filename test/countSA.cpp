@@ -2,8 +2,8 @@
 #include <fstream>
 #include <string>
 #include <stdlib.h>
-#include "../shared/patterns.h"
-#include "../shared/timer.h"
+#include "../shared/patterns.hpp"
+#include "../shared/timer.hpp"
 #include "../sa.hpp"
 
 using namespace std;
@@ -68,9 +68,9 @@ void saStd(const char *textFileName, unsigned int queriesNum, unsigned int m) {
 		sa->save(indexFileName);
 	}
 
-	Patterns *P = new Patterns(textFileName, queriesNum, m);
-	//NegativePatterns *P = new NegativePatterns(textFileName, queriesNum, m);
-	/*MaliciousPatterns *P = new MaliciousPatterns(textFileName, m);
+	Patterns32 *P = new Patterns32(textFileName, queriesNum, m);
+	//NegativePatterns32 *P = new NegativePatterns32(textFileName, queriesNum, m);
+	/*MaliciousPatterns32 *P = new MaliciousPatterns32(textFileName, m);
 	queriesNum = P->getQueriesNum();
 	if (queriesNum == 0) exit(1);*/
 	unsigned char **patterns = P->getPatterns();
@@ -116,9 +116,9 @@ void saDbl(const char *textFileName, unsigned int queriesNum, unsigned int m) {
 		sa->save(indexFileName);
 	}
 
-	Patterns *P = new Patterns(textFileName, queriesNum, m);
-	//NegativePatterns *P = new NegativePatterns(textFileName, queriesNum, m);
-	/*MaliciousPatterns *P = new MaliciousPatterns(textFileName, m);
+	Patterns32 *P = new Patterns32(textFileName, queriesNum, m);
+	//NegativePatterns32 *P = new NegativePatterns32(textFileName, queriesNum, m);
+	/*MaliciousPatterns32 *P = new MaliciousPatterns32(textFileName, m);
 	queriesNum = P->getQueriesNum();
 	if (queriesNum == 0) exit(1);*/
 	unsigned char **patterns = P->getPatterns();
@@ -164,9 +164,9 @@ void saLut2Std(const char *textFileName, unsigned int queriesNum, unsigned int m
 		saLut2->save(indexFileName);
 	}
 
-	Patterns *P = new Patterns(textFileName, queriesNum, m);
-	//NegativePatterns *P = new NegativePatterns(textFileName, queriesNum, m);
-	/*MaliciousPatterns *P = new MaliciousPatterns(textFileName, m);
+	Patterns32 *P = new Patterns32(textFileName, queriesNum, m);
+	//NegativePatterns32 *P = new NegativePatterns32(textFileName, queriesNum, m);
+	/*MaliciousPatterns32 *P = new MaliciousPatterns32(textFileName, m);
 	queriesNum = P->getQueriesNum();
 	if (queriesNum == 0) exit(1);*/
 	unsigned char **patterns = P->getPatterns();
@@ -212,9 +212,9 @@ void saLut2Dbl(const char *textFileName, unsigned int queriesNum, unsigned int m
 		saLut2->save(indexFileName);
 	}
 
-	Patterns *P = new Patterns(textFileName, queriesNum, m);
-	//NegativePatterns *P = new NegativePatterns(textFileName, queriesNum, m);
-	/*MaliciousPatterns *P = new MaliciousPatterns(textFileName, m);
+	Patterns32 *P = new Patterns32(textFileName, queriesNum, m);
+	//NegativePatterns32 *P = new NegativePatterns32(textFileName, queriesNum, m);
+	/*MaliciousPatterns32 *P = new MaliciousPatterns32(textFileName, m);
 	queriesNum = P->getQueriesNum();
 	if (queriesNum == 0) exit(1);*/
 	unsigned char **patterns = P->getPatterns();
@@ -260,9 +260,9 @@ void saStdHash(string k, string loadFactor, const char *textFileName, unsigned i
 		sa->save(indexFileName);
 	}
 
-	Patterns *P = new Patterns(textFileName, queriesNum, m);
-	//NegativePatterns *P = new NegativePatterns(textFileName, queriesNum, m);
-	/*MaliciousPatterns *P = new MaliciousPatterns(textFileName, m);
+	Patterns32 *P = new Patterns32(textFileName, queriesNum, m);
+	//NegativePatterns32 *P = new NegativePatterns32(textFileName, queriesNum, m);
+	/*MaliciousPatterns32 *P = new MaliciousPatterns32(textFileName, m);
 	queriesNum = P->getQueriesNum();
 	if (queriesNum == 0) exit(1);*/
 	unsigned char **patterns = P->getPatterns();
@@ -308,9 +308,9 @@ void saDblHash(string k, string loadFactor, const char *textFileName, unsigned i
 		sa->save(indexFileName);
 	}
 
-	Patterns *P = new Patterns(textFileName, queriesNum, m);
-	//NegativePatterns *P = new NegativePatterns(textFileName, queriesNum, m);
-	/*MaliciousPatterns *P = new MaliciousPatterns(textFileName, m);
+	Patterns32 *P = new Patterns32(textFileName, queriesNum, m);
+	//NegativePatterns32 *P = new NegativePatterns32(textFileName, queriesNum, m);
+	/*MaliciousPatterns32 *P = new MaliciousPatterns32(textFileName, m);
 	queriesNum = P->getQueriesNum();
 	if (queriesNum == 0) exit(1);*/
 	unsigned char **patterns = P->getPatterns();
@@ -356,9 +356,9 @@ void saStdHashDense(string k, string loadFactor, const char *textFileName, unsig
 		sa->save(indexFileName);
 	}
 
-	Patterns *P = new Patterns(textFileName, queriesNum, m);
-	//NegativePatterns *P = new NegativePatterns(textFileName, queriesNum, m);
-	/*MaliciousPatterns *P = new MaliciousPatterns(textFileName, m);
+	Patterns32 *P = new Patterns32(textFileName, queriesNum, m);
+	//NegativePatterns32 *P = new NegativePatterns32(textFileName, queriesNum, m);
+	/*MaliciousPatterns32 *P = new MaliciousPatterns32(textFileName, m);
 	queriesNum = P->getQueriesNum();
 	if (queriesNum == 0) exit(1);*/
 	unsigned char **patterns = P->getPatterns();
@@ -404,9 +404,9 @@ void saDblHashDense(string k, string loadFactor, const char *textFileName, unsig
 		sa->save(indexFileName);
 	}
 
-	Patterns *P = new Patterns(textFileName, queriesNum, m);
-	//NegativePatterns *P = new NegativePatterns(textFileName, queriesNum, m);
-	/*MaliciousPatterns *P = new MaliciousPatterns(textFileName, m);
+	Patterns32 *P = new Patterns32(textFileName, queriesNum, m);
+	//NegativePatterns32 *P = new NegativePatterns32(textFileName, queriesNum, m);
+	/*MaliciousPatterns32 *P = new MaliciousPatterns32(textFileName, m);
 	queriesNum = P->getQueriesNum();
 	if (queriesNum == 0) exit(1);*/
 	unsigned char **patterns = P->getPatterns();

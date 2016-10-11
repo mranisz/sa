@@ -115,7 +115,7 @@ SALut2<SAType T>();
 ```
 #include <iostream>
 #include <stdlib.h>
-#include "sa/shared/patterns.h"
+#include "sa/shared/patterns.hpp"
 #include "sa/sa.hpp"
 
 using namespace std;
@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
 	double indexSize = (double)sa->getIndexSize();
 	cout << "Index size: " << indexSize << "B (" << (indexSize / (double)sa->getTextSize()) << "n)" << endl << endl;
 
-	Patterns *P = new Patterns(textFileName, queriesNum, patternLen);
+	Patterns32 *P = new Patterns32(textFileName, queriesNum, patternLen);
 	unsigned char **patterns = P->getPatterns();
 
 	for (unsigned int i = 0; i < queriesNum; ++i) {

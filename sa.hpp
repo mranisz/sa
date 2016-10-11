@@ -9,7 +9,7 @@
 #include <cstdio>
 #include "libs/asmlib.h"
 #include "shared/sais.h"
-#include "shared/common.h"
+#include "shared/common.hpp"
 #include "shared/hash.hpp"
 
 using namespace std;
@@ -62,7 +62,7 @@ protected:
                 cout << "Building SA ... " << flush;
                 this->alignedSa[0] = this->textLen;
                 ++this->alignedSa;
-                sais(this->alignedText, (int *)this->alignedSa, this->textLen);
+                sais(this->alignedText, this->alignedSa, this->textLen);
                 --this->alignedSa;
                 cout << "Done" << endl;
                 cout << "Saving SA in " << saFileName << " ... " << flush;
@@ -214,7 +214,7 @@ public:
                             binarySearchDbl(this->alignedSa, this->alignedText, 0, this->saLen, pattern, patternLen, beg, end);
                             break;
                     default:
-                            binarySearch(this->alignedSa, this->alignedText, 0, this->saLen, pattern, patternLen, beg, end);
+                            binarySearch(this->alignedSa, this->alignedText, 0U, this->saLen, pattern, patternLen, beg, end);
                             break;
             }
             return end - beg;
@@ -227,7 +227,7 @@ public:
                             binarySearchDbl(this->alignedSa, this->alignedText, 0, this->saLen, pattern, patternLen, beg, end);
                             break;
                     default:
-                            binarySearch(this->alignedSa, this->alignedText, 0, this->saLen, pattern, patternLen, beg, end);
+                            binarySearch(this->alignedSa, this->alignedText, 0U, this->saLen, pattern, patternLen, beg, end);
                             break;
             }
             res.insert(res.end(), this->alignedSa + beg, this->alignedSa + end);
@@ -236,7 +236,7 @@ public:
 
 template<SAType T, HTType HASHTYPE> class SAHash : public SA<T> {
 protected:
-	HT<HASHTYPE> *ht = NULL;
+	HT32<HASHTYPE> *ht = NULL;
 
 	void freeMemory() {
             SA<T>::freeMemory();
@@ -246,7 +246,7 @@ protected:
 public:
 	SAHash(unsigned int k, double loadFactor) {
 		this->initialize();
-                this->ht = new HT<HASHTYPE>(k, loadFactor);
+                this->ht = new HT32<HASHTYPE>(k, loadFactor);
 	}
 
 	~SAHash() {
@@ -277,7 +277,7 @@ public:
 	void load(FILE *inFile) {
             SA<T>::load(inFile);
             delete this->ht;
-            this->ht = new HT<HASHTYPE>();
+            this->ht = new HT32<HASHTYPE>();
             this->ht->load(inFile);
         }
         
