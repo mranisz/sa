@@ -1,13 +1,16 @@
 # SA (Suffix Array) variants
 
 ##What is it?
-The library contains ...
+The library contains implementions of a few suffix array (SA) variants. The standard SA (U. Manber, G. Myers. Suffix arrays: a new method for on-line string searches, in Proceedings of the 1st ACM-SIAM Annual Symposium on Discrete Algorithms, SIAM, 1990, pp. 319-327) is a widely known full-text index, allowing to find all the occurrences of a pattern in the (indexed) text in O(m log n) time, where m is the pattern length and n is the text length.
+Assuming n < 2^31 (characters or bytes), the standard SA occupies 4n bytes, on top of the 1n bytes for the text.
+
+The other implemented variants, SA-hash (Sz. Grabowski, M. Raniszewski. Two simple full-text indexes based on the suffix array. arXiv:1405.5919, 2016) and SA-LUT2 (U. Manber, G. Myers. Suffix arrays: a new method for on-line string searches, in Proceedings of the 1st ACM-SIAM Annual Symposium on Discrete Algorithms, SIAM, 1990, pp. 319-327), speed up the SA searches in practice, for the price of extra space.
 
 ##Requirements
 The SA indexes require:
 - C++11 ready compiler such as g++ version 4.7 or higher
 - a 64-bit operating system
-- text size is limited to 4GB
+- text size is limited to 2GB
 
 ##Installation
 To download and build the library use the following commands:
