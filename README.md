@@ -1,10 +1,10 @@
 # SA (Suffix Array) variants
 
 ##What is it?
-The library contains implementions of a few suffix array (SA) variants. The standard SA (U. Manber, G. Myers. Suffix arrays: a new method for on-line string searches, in Proceedings of the 1st ACM-SIAM Annual Symposium on Discrete Algorithms, SIAM, 1990, pp. 319-327) is a widely known full-text index, allowing to find all the occurrences of a pattern in the (indexed) text in O(m log n) time, where m is the pattern length and n is the text length.
+The library contains implementions of a few suffix array (SA) variants. The standard SA \[[1](#references)\] is a widely known full-text index, allowing to find all the occurrences of a pattern in the (indexed) text in O(m log n) time, where m is the pattern length and n is the text length.
 Assuming n < 2^31 (characters or bytes), the standard SA occupies 4n bytes, on top of the 1n bytes for the text.
 
-The other implemented variants, SA-hash (Sz. Grabowski, M. Raniszewski. Two simple full-text indexes based on the suffix array. arXiv:1405.5919, 2016) and SA-LUT2 (U. Manber, G. Myers. Suffix arrays: a new method for on-line string searches, in Proceedings of the 1st ACM-SIAM Annual Symposium on Discrete Algorithms, SIAM, 1990, pp. 319-327), speed up the SA searches in practice, for the price of extra space.
+The other implemented variants, SA-hash \[[2](#references)\] and SA-LUT2 \[[1](#references)\], speed up the SA searches in practice, for the price of extra space.
 
 ##Requirements
 The SA indexes require:
@@ -160,6 +160,10 @@ Using other variants of SA index is analogous.
 - Suffix array building by Yuta Mori (sais)
 - A multi-platform library of highly optimized functions for C and C++ by Agner Fog (asmlib)
 - A very fast hash function by Yann Collet (xxHash)
+
+##References
+1. U. Manber, G. Myers. Suffix arrays: a new method for on-line string searches, in Proceedings of the 1st ACM-SIAM Annual Symposium on Discrete Algorithms, SIAM, 1990, pp. 319-327
+2. Sz. Grabowski, M. Raniszewski. Two simple full-text indexes based on the suffix array. arXiv:1405.5919, 2016
 
 ##Authors
 - Szymon Grabowski
