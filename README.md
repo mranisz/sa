@@ -162,8 +162,8 @@ Using other variants of SA index is analogous.
 - A very fast hash function by Yann Collet (xxHash)
 
 ##References
-1. U. Manber, G. Myers. Suffix arrays: a new method for on-line string searches, in Proceedings of the 1st ACM-SIAM Annual Symposium on Discrete Algorithms, SIAM, 1990, pp. 319-327
-2. Sz. Grabowski, M. Raniszewski. Two simple full-text indexes based on the suffix array. arXiv:1405.5919, 2016
+1. U. Manber, G. Myers. Suffix arrays: a new method for on-line string searches, in Proceedings of the 1st ACM-SIAM Annual Symposium on Discrete Algorithms, SIAM, 1990, pp. 319-327.
+2. Sz. Grabowski, M. Raniszewski. Two simple full-text indexes based on the suffix array. arXiv:1405.5919, 2016.
 
 ##Authors
 - Szymon Grabowski
