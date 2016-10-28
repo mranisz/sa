@@ -68,7 +68,7 @@ void locate(unsigned char *pattern, unsigned int patternLen, vector<unsigned int
 Parameters:
 - T:
       - SA_STANDARD
-      - SA_DBL - ...
+      - SA_DBL - searching for the right interval boundary is performed with doubling steps, i.e. left + 1, left + 2, left + 4, ..., left + iWentTooFar, followed with binary search over [left + (iWentTooFar / 2) + 1, left + iWentTooFar] interval
 
 Constructors:
 ```
@@ -81,7 +81,7 @@ SAHash is suffix array with hashed k-symbol prefixes of suffix array suffixes to
 Parameters:
 - T:
       - SA_STANDARD
-      - SA_DBL - ...
+      - SA_DBL - searching for the right interval boundary is performed with doubling steps, i.e. left + 1, left + 2, left + 4, ..., left + iWentTooFar, followed with binary search over [left + (iWentTooFar / 2) + 1, left + iWentTooFar] interval
 - HASHTYPE:
       - HT_STANDARD - using 8 bytes for each hashed entry: 4 bytes for left boundary + 4 bytes for right boundary
       - HT_DENSE - using 6 bytes for each hashed entry: 4 bytes for left boundary + 2 bytes for right boundary
@@ -104,7 +104,7 @@ To speed up searches, SA stores lookup table over all 2-symbol strings (LUT2), w
 Parameters:
 - T:
       - SA_STANDARD
-      - SA_DBL - ...
+      - SA_DBL - searching for the right interval boundary is performed with doubling steps, i.e. left + 1, left + 2, left + 4, ..., left + iWentTooFar, followed with binary search over [left + (iWentTooFar / 2) + 1, left + iWentTooFar] interval
 
 Limitations: 
 - pattern length ≥ 2 (patterns shorter than 2 are handled by standard variant of SA index)
