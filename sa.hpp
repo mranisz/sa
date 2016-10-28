@@ -51,7 +51,7 @@ protected:
         
         void getSA(const char *textFileName) {
             stringstream ss;
-            ss << "SA-" << textFileName << ".dat";
+            ss << "SA32-" << textFileName << ".dat";
             string s = ss.str();
             char *saFileName = (char *)(s.c_str());
             this->saLen = this->textLen + 1;
@@ -59,25 +59,25 @@ protected:
             this->alignedSa = this->sa;
             while ((unsigned long long)this->alignedSa % 128) ++this->alignedSa;
             if (!fileExists(saFileName)) {
-                cout << "Building SA ... " << flush;
+                cout << "Building SA32 ... " << flush;
                 this->alignedSa[0] = this->textLen;
                 ++this->alignedSa;
                 sais(this->alignedText, this->alignedSa, this->textLen);
                 --this->alignedSa;
                 cout << "Done" << endl;
-                cout << "Saving SA in " << saFileName << " ... " << flush;
+                cout << "Saving SA32 in " << saFileName << " ... " << flush;
                 FILE *outFile;
                 outFile = fopen(saFileName, "w");
                 fwrite(this->alignedSa, (size_t)(sizeof(unsigned int)), (size_t)this->saLen, outFile);
                 fclose(outFile);
             } 
             else {
-                cout << "Loading SA from " << saFileName << " ... " << flush;
+                cout << "Loading SA32 from " << saFileName << " ... " << flush;
                 FILE *inFile;
                 inFile = fopen(saFileName, "rb");
                 size_t result = fread(this->alignedSa, (size_t)sizeof(unsigned int), (size_t)this->saLen, inFile);
                 if (result != this->saLen) {
-                        cout << "Error loading SA from " << textFileName << endl;
+                        cout << "Error loading SA32 from " << textFileName << endl;
                         exit(1);
                 }
                 fclose(inFile);
