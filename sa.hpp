@@ -182,8 +182,8 @@ public:
             this->initialize();
         }
         
-	unsigned int getIndexSize() {
-            unsigned int size = sizeof(this->saLen) + sizeof(this->textLen);
+	unsigned long long getIndexSize() {
+            unsigned long long size = sizeof(this->saLen) + sizeof(this->textLen);
             if (this->saLen > 0) size += (this->saLen + 32) * sizeof(unsigned int);
             if (this->textLen > 0) size += (this->textLen + 128 + 1) * sizeof(unsigned char);
             return size;
@@ -294,7 +294,7 @@ public:
             this->initialize();
         }
         
-	unsigned int getIndexSize() {
+	unsigned long long getIndexSize() {
             return SA<T>::getIndexSize() + sizeof(this->ht) + this->ht->getHTSize();
         }
         
@@ -398,8 +398,8 @@ public:
             cout << "Done" << endl;
         }
         
-        unsigned int getIndexSize() {
-            unsigned int size = SA<T>::getIndexSize();
+        unsigned long long getIndexSize() {
+            unsigned long long size = SA<T>::getIndexSize();
             size += 256 * 256 * 2 * sizeof(unsigned int);
             return size;
         }
