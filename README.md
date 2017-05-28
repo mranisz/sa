@@ -25,7 +25,7 @@ To use the SA variants library:
 - include "sa/sa.hpp" to your project
 - compile it with "-std=c++11 -O3" options and link it with libraries:
   - sa/libsa.a
-  - sa/libs/libaelf64.a (linux) or fbcsa/libs/libacof64.lib (windows)
+  - sa/libs/libaelf64.a (linux) or sa/libs/libacof64.lib (windows)
 - use "sa" and "shared" namespaces
 
 ## API
