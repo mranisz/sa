@@ -1,18 +1,18 @@
 # SA (Suffix Array) variants
 
-##What is it?
+## What is it?
 The library contains implementions of a few suffix array (SA) variants. The standard SA \[[1](#references)\] is a widely known full-text index, allowing to find all the occurrences of a pattern in the (indexed) text in O(m log n) time, where m is the pattern length and n is the text length.
 Assuming n < 2^31 (characters or bytes), the standard SA occupies 4n bytes, on top of the 1n bytes for the text.
 
 The other implemented variants, SA-hash \[[2](#references)\] and SA-LUT2 \[[1](#references)\], speed up the SA searches in practice, for the price of extra space.
 
-##Requirements
+## Requirements
 The SA indexes require:
 - C++11 ready compiler such as g++ version 4.7 or higher
 - a 64-bit operating system
 - text size < 2GB
 
-##Installation
+## Installation
 To download and build the library use the following commands:
 ```
 git clone https://github.com/mranisz/sa.git
@@ -20,7 +20,7 @@ cd sa
 make
 ```
 
-##Usage
+## Usage
 To use the SA variants library:
 - include "sa/sa.hpp" to your project
 - compile it with "-std=c++11 -O3" options and link it with libraries:
@@ -28,7 +28,7 @@ To use the SA variants library:
   - sa/libs/libaelf64.a (linux) or fbcsa/libs/libacof64.lib (windows)
 - use "sa" and "shared" namespaces
 
-##API
+## API
 There are several functions you can call on each of the suffix array text index:
 - **build** the index using text file called textFileName:
 ```
@@ -63,7 +63,7 @@ unsigned int count(unsigned char *pattern, unsigned int patternLen);
 void locate(unsigned char *pattern, unsigned int patternLen, vector<unsigned int>& res);
 ```
 
-##SA\<SAType T\>
+## SA\<SAType T\>
 
 Parameters:
 - T:
@@ -75,7 +75,7 @@ Constructors:
 SA<SAType T>();
 ```
 
-##SAHash\<SAType T, HTType HASHTYPE\>
+## SAHash\<SAType T, HTType HASHTYPE\>
 SAHash is suffix array with hashed k-symbol prefixes of suffix array suffixes to speed up searches (k ≥ 2). This variant is particularly efficient in speed for short patterns (not much longer than k).
 
 Parameters:
@@ -98,7 +98,7 @@ Constructors:
 SAHash<SAType T, HTType HASHTYPE>(unsigned int k, double loadFactor);
 ```
 
-##SALut2\<SAType T\>
+## SALut2\<SAType T\>
 To speed up searches, SA stores lookup table over all 2-symbol strings (LUT2), whose entries are the suffix intervals.
 
 Parameters:
@@ -114,7 +114,7 @@ Constructors:
 SALut2<SAType T>();
 ```
 
-##SA usage example
+## SA usage example
 ```
 #include <iostream>
 #include <stdlib.h>
@@ -156,15 +156,15 @@ int main(int argc, char *argv[]) {
 ```
 Using other variants of SA index is analogous.
 
-##External resources used in SA project
+## External resources used in SA project
 - Suffix array building by Yuta Mori (sais)
 - A multi-platform library of highly optimized functions for C and C++ by Agner Fog (asmlib)
 - A very fast hash function by Yann Collet (xxHash)
 
-##References
+## References
 1. U. Manber, G. Myers. Suffix arrays: a new method for on-line string searches, in Proceedings of the 1st ACM-SIAM Annual Symposium on Discrete Algorithms, SIAM, 1990, pp. 319-327.
 2. Sz. Grabowski, M. Raniszewski. Two simple full-text indexes based on the suffix array. arXiv:1405.5919, 2016.
 
-##Authors
+## Authors
 - Szymon Grabowski
 - [Marcin Raniszewski](https://github.com/mranisz)
