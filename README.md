@@ -9,7 +9,7 @@ The other implemented variants, SA-hash \[[2](#references)\] and SA-LUT2 \[[1](#
 ## Requirements
 The SA indexes require:
 - C++11 ready compiler such as g++ version 4.7 or higher
-- a 64-bit operating system
+- a 64-bit UNIX operating system
 - text size < 2GB
 
 ## Installation
@@ -25,7 +25,7 @@ To use the SA variants library:
 - include "sa/sa.hpp" to your project
 - compile it with "-std=c++11 -O3" options and link it with libraries:
   - sa/libsa.a
-  - sa/libs/libaelf64.a (linux) or sa/libs/libacof64.lib (windows)
+  - sa/libs/libaelf64.a
 - use "sa" and "shared" namespaces
 
 ## API
