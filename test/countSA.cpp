@@ -82,7 +82,7 @@ void saStd(const char *textFileName, unsigned int queriesNum, unsigned int m) {
 	}
 	timer.stopTimer();
 
-	string resultFileName = "results/sa/" + string(textFileName) + "_count_SA.txt";
+	string resultFileName = "results/" + string(textFileName) + "_count_SA.txt";
 	fstream resultFile(resultFileName.c_str(), ios::out | ios::binary | ios::app);
 	double size = (double)sa->getIndexSize() / (double)sa->getTextSize();
 	cout << "count SA-std " << textFileName << " m=" << m << " queries=" << queriesNum << " size=" << size << "n time=" << timer.getElapsedTime() << endl;
@@ -130,7 +130,7 @@ void saDbl(const char *textFileName, unsigned int queriesNum, unsigned int m) {
 	}
 	timer.stopTimer();
 
-	string resultFileName = "results/sa/" + string(textFileName) + "_count_SA.txt";
+	string resultFileName = "results/" + string(textFileName) + "_count_SA.txt";
 	fstream resultFile(resultFileName.c_str(), ios::out | ios::binary | ios::app);
 	double size = (double)sa->getIndexSize() / (double)sa->getTextSize();
 	cout << "count SA-dbl " << textFileName << " m=" << m << " queries=" << queriesNum << " size=" << size << "n time=" << timer.getElapsedTime() << endl;
@@ -178,7 +178,7 @@ void saLut2Std(const char *textFileName, unsigned int queriesNum, unsigned int m
 	}
 	timer.stopTimer();
 
-	string resultFileName = "results/sa/" + string(textFileName) + "_count_SALut2.txt";
+	string resultFileName = "results/" + string(textFileName) + "_count_SALut2.txt";
 	fstream resultFile(resultFileName.c_str(), ios::out | ios::binary | ios::app);
 	double size = (double)saLut2->getIndexSize() / (double)saLut2->getTextSize();
 	cout << "count SALut2-std " << textFileName << " m=" << m << " queries=" << queriesNum << " size=" << size << "n time=" << timer.getElapsedTime() << endl;
@@ -226,7 +226,7 @@ void saLut2Dbl(const char *textFileName, unsigned int queriesNum, unsigned int m
 	}
 	timer.stopTimer();
 
-	string resultFileName = "results/sa/" + string(textFileName) + "_count_SALut2.txt";
+	string resultFileName = "results/" + string(textFileName) + "_count_SALut2.txt";
 	fstream resultFile(resultFileName.c_str(), ios::out | ios::binary | ios::app);
 	double size = (double)saLut2->getIndexSize() / (double)saLut2->getTextSize();
 	cout << "count SALut2-dbl " << textFileName << " m=" << m << " queries=" << queriesNum << " size=" << size << "n time=" << timer.getElapsedTime() << endl;
@@ -274,7 +274,7 @@ void saStdHash(string k, string loadFactor, const char *textFileName, unsigned i
 	}
 	timer.stopTimer();
 
-	string resultFileName = "results/sa/" + string(textFileName) + "_count_SA-hash.txt";
+	string resultFileName = "results/" + string(textFileName) + "_count_SA-hash.txt";
 	fstream resultFile(resultFileName.c_str(), ios::out | ios::binary | ios::app);
 	double size = (double)sa->getIndexSize() / (double)sa->getTextSize();
 	cout << "count SA-std-hash-" << k << "-" << loadFactor << " " << textFileName << " m=" << m << " queries=" << queriesNum << " size=" << size << "n time=" << timer.getElapsedTime() << endl;
@@ -322,7 +322,7 @@ void saDblHash(string k, string loadFactor, const char *textFileName, unsigned i
 	}
 	timer.stopTimer();
 
-	string resultFileName = "results/sa/" + string(textFileName) + "_count_SA-hash.txt";
+	string resultFileName = "results/" + string(textFileName) + "_count_SA-hash.txt";
 	fstream resultFile(resultFileName.c_str(), ios::out | ios::binary | ios::app);
 	double size = (double)sa->getIndexSize() / (double)sa->getTextSize();
 	cout << "count SA-dbl-hash-" << k << "-" << loadFactor << " " << textFileName << " m=" << m << " queries=" << queriesNum << " size=" << size << "n time=" << timer.getElapsedTime() << endl;
@@ -370,7 +370,7 @@ void saStdHashDense(string k, string loadFactor, const char *textFileName, unsig
 	}
 	timer.stopTimer();
 
-	string resultFileName = "results/sa/" + string(textFileName) + "_count_SA-hash-dense.txt";
+	string resultFileName = "results/" + string(textFileName) + "_count_SA-hash-dense.txt";
 	fstream resultFile(resultFileName.c_str(), ios::out | ios::binary | ios::app);
 	double size = (double)sa->getIndexSize() / (double)sa->getTextSize();
 	cout << "count SA-std-hash-dense-" << k << "-" << loadFactor << " " << textFileName << " m=" << m << " queries=" << queriesNum << " size=" << size << "n time=" << timer.getElapsedTime() << endl;
@@ -418,7 +418,7 @@ void saDblHashDense(string k, string loadFactor, const char *textFileName, unsig
 	}
 	timer.stopTimer();
 
-	string resultFileName = "results/sa/" + string(textFileName) + "_count_SA-hash-dense.txt";
+	string resultFileName = "results/" + string(textFileName) + "_count_SA-hash-dense.txt";
 	fstream resultFile(resultFileName.c_str(), ios::out | ios::binary | ios::app);
 	double size = (double)sa->getIndexSize() / (double)sa->getTextSize();
 	cout << "count SA-dbl-hash-dense-" << k << "-" << loadFactor << " " << textFileName << " m=" << m << " queries=" << queriesNum << " size=" << size << "n time=" << timer.getElapsedTime() << endl;
