@@ -23,7 +23,7 @@ make
 ## Usage
 To use the SA variants library:
 - include "sa/sa.hpp" to your project
-- compile it with "-std=c++11 -O3" options and link it with libraries:
+- compile it with "-faligned-new -std=c++11 -O3" options and link it with libraries:
   - sa/libsa.a
   - sa/libs/libaelf64.a
 - use "sa" and "shared" namespaces

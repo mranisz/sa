@@ -7,7 +7,7 @@ ASMLIB = libacof64.lib
 endif
 
 CXX=g++
-CFLAGS=-Wall -std=c++11 -O3
+CFLAGS=-Wall -faligned-new -std=c++11 -O3
 	
 all: countSA locateSA
 
